@@ -811,6 +811,29 @@ body {
   opacity: 0;
 }
 
+/* Carrusel de Descubrimiento Sensorial (v3.0 MPA - 100% CSS Scroll-Snap Nativo) */
+.sensory-carousel {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(290px, calc(33.333% - 1rem));
+  gap: var(--space-6);
+  overflow-x: auto;
+  padding-bottom: var(--space-4);
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.carousel-slide {
+  scroll-snap-align: start;
+}
+
+@media (max-width: 900px) {
+  .sensory-carousel {
+    grid-auto-columns: minmax(280px, 84%);
+  }
+}
+
 .recipe-actions {
   display: flex;
   flex-direction: column;

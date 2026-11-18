@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Costeña® | Recetario Matricial Completo (12+ Recetas Baja California)</title>
+  <meta name="description" content="Explora las 12 recetas del Sistema Matricial de La Costeña® para Baja California. Filtra por línea de producto, nivel de picor y tiempo, y pide ingredientes en Calimax Tijuana.">
+  <meta name="theme-color" content="#9E0B22">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- AEO JSON-LD Granular en recetas.html: 12 Recetas Completas -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      { "@type": "Recipe", "@id": "https://www.lacostena.com.mx/#rec-chilaquiles", "name": "Chilaquiles Verdes Crujientes con Pollo Deshebrado" },
+      { "@type": "Recipe", "@id": "https://www.lacostena.com.mx/#rec-tinga", "name": "Tinga Poblana de Pollo al Chipotle Adobado" },
+      { "@type": "Recipe", "@id": "https://www.lacostena.com.mx/#rec-esquites", "name": "Esquites Callejeros Cremosos con Mayonesa de Chipotle" },
+      { "@type": "Recipe", "@id": "https://www.lacostena.com.mx/#rec-enfrijoladas", "name": "Enfrijoladas de Hogar con Chorizo y Queso Fresco" },
+      { "@type": "Recipe", "@id": "https://www.lacostena.com.mx/#rec-huevos-rancheros", "name": "Huevos Rancheros de Hacienda con Jalapeños en Escabeche" },
+      { "@type": "Recipe", "@id": "https://www.lacostena.com.mx/#rec-tacos-dorados", "name": "Tacos Dorados Ahogados en Salsa Ranchera Tatemada" },
+      { "@type": "Recipe", "@id": "https://www.lacostena.com.mx/#rec-burrito-baja", "name": "Burrito Fronterizo de Carne Asada y Frijoles Bayos" },
+      { "@type": "Recipe", "@id": "https://www.lacostena.com.mx/#rec-tostadas-ceviche-verde", "name": "Tostadas estilo Ensenada con Salsa Verde de Tomatillo" },
+      { "@type": "Recipe", "@id": "https://www.lacostena.com.mx/#rec-camarones-chipotle", "name": "Camarones del Pacífico al Chipotle Cremoso" },
+      { "@type": "Recipe", "@id": "https://www.lacostena.com.mx/#rec-sopa-tortilla-ranchera", "name": "Sopa Azteca Express con Salsa Ranchera Tatemada" },
+      { "@type": "Recipe", "@id": "https://www.lacostena.com.mx/#rec-ensalada-elotes-tijuana", "name": "Ensalada Fresca de Elotes Dorados y Aguacate" },
+      { "@type": "Recipe", "@id": "https://www.lacostena.com.mx/#rec-molletes-jalapeno", "name": "Molletes Gratinados con Frijoles Bayos y Pico de Jalapeño" }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+
+  <!-- Barra de Auditoría de Presupuestos de Rendimiento y Telemetría Omnicanal -->
+  <aside class="perf-bar" aria-label="Auditoría de presupuesto de rendimiento y telemetría en tiempo real">
+    <div class="container perf-bar-inner">
+      <span class="perf-title">Telemetría Web Vitals &amp; MPA v3.0 (Catálogo Anidado)</span>
+      <ul class="perf-metrics">
+        <li>LCP (&le;2500ms): <strong id="metric-lcp">&lt; 180 ms</strong></li>
+        <li>INP (&le;200ms): <strong id="metric-inp">&lt; 16 ms</strong></li>
+        <li>CLS (&le;0.10): <strong id="metric-cls">0.000</strong></li>
+        <li>Sesión: <strong id="auth-status-label">Usuario no registrado</strong></li>
+        <li>Retail: <strong id="geo-region-badge">📍 Baja California · Calimax Activo</strong></li>
+        <li>Eventos BI: <strong id="metric-events" data-count="0">0</strong></li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- Web Component de Cabecera Compartida (Shadow DOM) -->
+  <site-header>
+    <header class="site-header">
+      <nav aria-label="Navegación de respaldo"><a href="index.html">Volver al inicio</a></nav>
+    </header>
+  </site-header>
+
+  <main id="main-content">
+    <section id="recetas" class="section-block" aria-labelledby="recetas-heading">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <span class="eyebrow">Catálogo Anidado · 12 Recetas Regionales con Ingredientes de Tijuana</span>
+            <h1 id="recetas-heading" class="section-title">Sistema Matricial de Recetas</h1>
+            <p class="section-subtitle">
+              Cruza línea de producto, nivel de picor y tiempo de cocción con renderizado directo en <code>#recipe-grid-full</code> mediante <code>DocumentFragment</code>.
+            </p>
+          </div>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            id="btn-toggle-matrix"
+            aria-expanded="true"
+            aria-controls="matrix-panel"
+          >
+            Ocultar / Mostrar Matriz
+          </button>
+        </div>
+
+        <div id="matrix-panel" class="matrix-shell">
+          <div class="matrix-top-bar">
+            <div class="search-field-wrap">
+              <label for="recipe-search" class="search-label">Buscar por ingrediente local o platillo</label>
+              <input
+                type="search"
+                id="recipe-search"
+                class="search-input"
+                placeholder="Ej. chipotle, camarón, burrito, Tijuana, chilaquiles..."
+                autocomplete="off"
+              >
+            </div>
+            <button type="button" class="btn btn-secondary" id="btn-reset-filters">
+              Limpiar filtros
+            </button>
+          </div>
+
+          <div id="recipe-matrix-controls" class="matrix-controls-grid">
+            <!-- Eje 1: Categoría de Producto -->
+            <div>
+              <h2 id="axis-category-label" class="matrix-axis-title">1. Línea de Producto</h2>
+              <div class="chip-group" role="group" aria-labelledby="axis-category-label">
+                <button type="button" class="filter-chip" data-axis="category" data-value="all" aria-pressed="true">Todas</button>
+                <button type="button" class="filter-chip" data-axis="category" data-value="chiles" aria-pressed="false">Chiles</button>
+                <button type="button" class="filter-chip" data-axis="category" data-value="salsas" aria-pressed="false">Salsas</button>
+                <button type="button" class="filter-chip" data-axis="category" data-value="frijoles" aria-pressed="false">Frijoles</button>
+                <button type="button" class="filter-chip" data-axis="category" data-value="vegetales" aria-pressed="false">Vegetales</button>
+              </div>
+            </div>
+
+            <!-- Eje 2: Nivel de Picor -->
+            <div>
+              <h2 id="axis-heat-label" class="matrix-axis-title">2. Nivel de Picor</h2>
+              <div class="chip-group" role="group" aria-labelledby="axis-heat-label">
+                <button type="button" class="filter-chip" data-axis="heat" data-value="all" aria-pressed="true">Cualquier picor</button>
+                <button type="button" class="filter-chip" data-axis="heat" data-value="suave" aria-pressed="false">🌶 Suave</button>
+                <button type="button" class="filter-chip" data-axis="heat" data-value="medio" aria-pressed="false">🌶🌶 Medio</button>
+                <button type="button" class="filter-chip" data-axis="heat" data-value="alto" aria-pressed="false">🌶🌶🌶 Intenso</button>
+              </div>
+            </div>
+
+            <!-- Eje 3: Tiempo de Preparación -->
+            <div>
+              <h2 id="axis-time-label" class="matrix-axis-title">3. Tiempo en Cocina</h2>
+              <div class="chip-group" role="group" aria-labelledby="axis-time-label">
+                <button type="button" class="filter-chip" data-axis="time" data-value="all" aria-pressed="true">Todos los tiempos</button>
+                <button type="button" class="filter-chip" data-axis="time" data-value="express" aria-pressed="false">Express (&le;15 min)</button>
+                <button type="button" class="filter-chip" data-axis="time" data-value="tradicional" aria-pressed="false">Tradicional (16-25 min)</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="matrix-status-bar">
+            <p id="filter-status" role="status" aria-live="polite" aria-atomic="true">
+              Mostrando 12 recetas disponibles en el catálogo completo.
+            </p>
+            <span id="recipe-count-badge" class="tag-pill">12 de 12 recetas</span>
+          </div>
+        </div>
+
+        <!-- Contenedor Completo de 12+ Recetas -->
+        <div id="recipe-grid-full" class="card-grid" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal Nativo <dialog> para Receta Paso a Paso -->
+  <dialog id="recipe-dialog" class="recipe-dialog" aria-labelledby="dialog-recipe-title">
+    <div id="recipe-dialog-content" class="dialog-inner"></div>
+  </dialog>
+
+  <!-- Widget Omnicanal de Carrito WhatsApp (Web Component con Shadow DOM) -->
+  <whatsapp-cart-widget></whatsapp-cart-widget>
+
+  <!-- Agente Virtual de Atención al Cliente (NIST AI Risk Management Framework & LFPDPPP) -->
+  <aside id="ai-chatbot" class="ai-chatbot" aria-label="Agente virtual de atención al cliente La Costeña">
+    <button
+      type="button"
+      id="chatbot-toggle"
+      class="chatbot-fab"
+      aria-expanded="false"
+      aria-controls="chatbot-panel"
+    >
+      <span aria-hidden="true">💬</span>
+      <span>Asistente IA</span>
+    </button>
+
+    <div id="chatbot-panel" class="chatbot-panel" hidden>
+      <div class="chatbot-header">
+        <div>
+          <strong class="chatbot-title">Chef Virtual La Costeña®</strong>
+          <span class="chatbot-badge">NIST AI RMF · Sesión Efímera</span>
+        </div>
+        <button type="button" id="chatbot-close" class="chatbot-close" aria-label="Minimizar asistente virtual">✕</button>
+      </div>
+
+      <p class="chatbot-disclosure">
+        Aviso de transparencia (NIST AI RMF / LFPDPPP): Interactúas con un sistema automatizado sin retención de datos personales. El historial se purga al cerrar la pestaña.
+      </p>
+
+      <div id="chatbot-messages" class="chatbot-messages" role="log" aria-live="polite">
+        <div class="chat-msg chat-msg-bot">
+          ¡Hola! Estás en el catálogo completo de 12 recetas. Pregúntame por mariscos de Ensenada, burritos fronterizos o chiles chipotles.
+        </div>
+      </div>
+
+      <form id="chatbot-form" class="chatbot-form">
+        <label for="chatbot-input" class="sr-only">Escribe tu consulta culinaria</label>
+        <input
+          type="text"
+          id="chatbot-input"
+          class="chatbot-input"
+          placeholder="Ej. ¿Qué receta lleva camarón?"
+          autocomplete="off"
+          required
+        >
+        <button type="submit" class="btn btn-primary chatbot-send">Enviar</button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- Web Component de Pie de Página Compartido (Shadow DOM) -->
+  <site-footer>
+    <footer class="site-footer">&copy; 2026 La Costeña</footer>
+  </site-footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

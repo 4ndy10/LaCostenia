@@ -1,13 +1,20 @@
 // ponytail: Offline-First Service Worker with static pre-cache list; no Workbox dependency needed
 
-const CACHE_NAME = 'la-costena-v2-omnichannel-v1';
+const CACHE_NAME = 'la-costena-v3-nested-catalog-v1';
 
 const PRECACHE_ASSETS = [
   './',
   'index.html',
+  'recetas.html',
   'css/styles.css',
   'js/app.js',
   'js/data.js',
+  'js/components/index.js',
+  'js/components/site-header.js',
+  'js/components/site-footer.js',
+  'js/components/whatsapp-cart-widget.js',
+  'js/modules/router.js',
+  'js/modules/matrix-filter.js',
   'js/modules/omnichannel.js',
   'js/modules/auth-state.js',
   'assets/img/hero-banner.avif',

@@ -1,3 +1,11 @@
+const WA_BASE = 'https://wa.me/8002254629?text=';
+
+function makeWaLink(nombre, ingredientes) {
+  return `${WA_BASE}${encodeURIComponent(
+    `Hola Calimax Tijuana, quiero pedir los ingredientes para "${nombre}": ${ingredientes.join(', ')}`
+  )}`;
+}
+
 export const PRODUCTS = [
   {
     id: 'prod-jalapenos',
@@ -97,37 +105,26 @@ export const PRODUCTS = [
   }
 ];
 
-export const RECIPES = [
+const RAW_RECIPES = [
   {
     id: 'rec-chilaquiles',
+    featured: true,
     nombre: 'Chilaquiles Verdes Crujientes con Pollo Deshebrado',
-    title: 'Chilaquiles Verdes Crujientes con Pollo Deshebrado',
     categoria: 'Salsas',
     category: 'salsas',
     categoryLabel: 'Con Salsas Caseras',
     picor: 'suave',
-    heat: 'suave',
     heatLabel: 'Picor Suave',
     tiempo: 'express',
-    timeBucket: 'express',
     timeMinutes: 15,
     servings: 4,
     calories: '420 kcal',
     productUsed: 'Salsa Verde Mexicana 250 g',
     image: 'assets/img/rec-chilaquiles',
-    imagen: 'assets/img/rec-chilaquiles.avif',
-    imagenWebp: 'assets/img/rec-chilaquiles.webp',
     summary: 'Totopos de maíz bañados al momento en Salsa Verde Mexicana caliente, coronados con crema fresca, queso Cotija y cebolla morada.',
-    ingredientes: [
+    ingredientes_locales: [
       '1 frasco de Salsa Verde Mexicana La Costeña (250 g)',
-      '300 g de totopos de maíz dorados',
-      '200 g de pechuga de pollo cocida y deshebrada',
-      '1/2 taza de crema ácida fresca y 80 g de queso Cotija',
-      'Cilantro fresco picado y aros de cebolla morada'
-    ],
-    ingredients: [
-      '1 frasco de Salsa Verde Mexicana La Costeña (250 g)',
-      '300 g de totopos de maíz dorados',
+      '300 g de totopos de maíz dorados de tortillería de Tijuana',
       '200 g de pechuga de pollo cocida y deshebrada',
       '1/2 taza de crema ácida fresca y 80 g de queso Cotija',
       'Cilantro fresco picado y aros de cebolla morada'
@@ -140,36 +137,25 @@ export const RECIPES = [
   },
   {
     id: 'rec-tinga',
+    featured: true,
     nombre: 'Tinga Poblana de Pollo al Chipotle Adobado',
-    title: 'Tinga Poblana de Pollo al Chipotle Adobado',
     categoria: 'Chiles',
     category: 'chiles',
     categoryLabel: 'Con Chiles',
     picor: 'alto',
-    heat: 'alto',
     heatLabel: 'Picor Intenso',
     tiempo: 'tradicional',
-    timeBucket: 'tradicional',
     timeMinutes: 25,
     servings: 6,
     calories: '380 kcal',
     productUsed: 'Chiles Chipotles Adobados 215 g',
     image: 'assets/img/rec-tinga',
-    imagen: 'assets/img/rec-tinga.avif',
-    imagenWebp: 'assets/img/rec-tinga.webp',
     summary: 'Hebras de pollo jugosas cocinadas lentamente en caldillo de jitomate asado, cebolla caramelizada y el toque ahumado de Chipotles Adobados.',
-    ingredientes: [
-      '1 lata de Chiles Chipotles Adobados La Costeña (al gusto)',
+    ingredientes_locales: [
+      '1 lata de Chiles Chipotles Adobados La Costeña (215 g)',
       '500 g de pechuga de pollo deshebrada',
       '2 cebollas blancas grandes fileteadas en pluma',
-      '4 jitomates guaje maduros asados',
-      '1 hoja de laurel y tostadas de maíz para servir'
-    ],
-    ingredients: [
-      '1 lata de Chiles Chipotles Adobados La Costeña (al gusto)',
-      '500 g de pechuga de pollo deshebrada',
-      '2 cebollas blancas grandes fileteadas en pluma',
-      '4 jitomates guaje maduros asados',
+      '4 jitomates guaje maduros de San Quintín asados',
       '1 hoja de laurel y tostadas de maíz para servir'
     ],
     steps: [
@@ -179,113 +165,22 @@ export const RECIPES = [
     ]
   },
   {
-    id: 'rec-enfrijoladas',
-    nombre: 'Enfrijoladas de Hogar con Chorizo y Queso Fresco',
-    title: 'Enfrijoladas de Hogar con Chorizo y Queso Fresco',
-    categoria: 'Frijoles',
-    category: 'frijoles',
-    categoryLabel: 'Con Frijoles',
-    picor: 'suave',
-    heat: 'suave',
-    heatLabel: 'Picor Suave',
-    tiempo: 'tradicional',
-    timeBucket: 'tradicional',
-    timeMinutes: 20,
-    servings: 4,
-    calories: '460 kcal',
-    productUsed: 'Frijoles Bayos Refritos 430 g',
-    image: 'assets/img/rec-enfrijoladas',
-    imagen: 'assets/img/rec-enfrijoladas.avif',
-    imagenWebp: 'assets/img/rec-enfrijoladas.webp',
-    summary: 'Tortillas recién hechas rellenas de queso panela y cubiertas con una salsa aterciopelada de Frijoles Bayos Refritos y epazote.',
-    ingredientes: [
-      '1 lata de Frijoles Bayos Refritos La Costeña (430 g)',
-      '12 tortillas de maíz calientes',
-      '150 g de chorizo dorado y escurrido',
-      '200 g de queso fresco desmoronado',
-      '1 taza de leche o caldo de pollo y rodajas de aguacate'
-    ],
-    ingredients: [
-      '1 lata de Frijoles Bayos Refritos La Costeña (430 g)',
-      '12 tortillas de maíz calientes',
-      '150 g de chorizo dorado y escurrido',
-      '200 g de queso fresco desmoronado',
-      '1 taza de leche o caldo de pollo y rodajas de aguacate'
-    ],
-    steps: [
-      'Licúa los Frijoles Bayos Refritos La Costeña con el caldo caliente hasta lograr una salsa tersa y cremosa.',
-      'Rellena las tortillas calientes con queso fresco, dóblalas y colócalas en el plato.',
-      'Baña generosamente con la salsa de frijol caliente y corona con chorizo dorado y aguacate.'
-    ]
-  },
-  {
-    id: 'rec-huevos-rancheros',
-    nombre: 'Huevos Rancheros de Hacienda con Jalapeños en Escabeche',
-    title: 'Huevos Rancheros de Hacienda con Jalapeños en Escabeche',
-    categoria: 'Chiles',
-    category: 'chiles',
-    categoryLabel: 'Con Chiles',
-    picor: 'medio',
-    heat: 'medio',
-    heatLabel: 'Picor Medio',
-    tiempo: 'express',
-    timeBucket: 'express',
-    timeMinutes: 12,
-    servings: 2,
-    calories: '350 kcal',
-    productUsed: 'Chiles Jalapeños Enteros 220 g',
-    image: 'assets/img/rec-huevos-rancheros',
-    imagen: 'assets/img/rec-huevos-rancheros.avif',
-    imagenWebp: 'assets/img/rec-huevos-rancheros.webp',
-    summary: 'Huevos estrellados sobre tortilla dorada, cubiertos con Salsa Ranchera tibia y coronados con Chiles Jalapeños y zanahorias en escabeche.',
-    ingredientes: [
-      '1 lata de Chiles Jalapeños Enteros La Costeña (220 g)',
-      '1 frasco de Salsa Ranchera Tatemada La Costeña (250 g)',
-      '4 huevos frescos de granja',
-      '4 tortillas de maíz pasadas por aceite caliente',
-      'Frijoles Bayos Refritos para acompañar'
-    ],
-    ingredients: [
-      '1 lata de Chiles Jalapeños Enteros La Costeña (220 g)',
-      '1 frasco de Salsa Ranchera Tatemada La Costeña (250 g)',
-      '4 huevos frescos de granja',
-      '4 tortillas de maíz pasadas por aceite caliente',
-      'Frijoles Bayos Refritos para acompañar'
-    ],
-    steps: [
-      'Pasa ligeramente las tortillas por aceite caliente para suavizarlas y colócalas de dos en dos por plato.',
-      'Estrella los huevos al gusto y colócalos sobre las tortillas.',
-      'Baña con la Salsa Ranchera caliente y sirve con Chiles Jalapeños y zanahorias en escabeche.'
-    ]
-  },
-  {
     id: 'rec-esquites',
+    featured: true,
     nombre: 'Esquites Callejeros Cremosos con Mayonesa de Chipotle',
-    title: 'Esquites Callejeros Cremosos con Mayonesa de Chipotle',
     categoria: 'Vegetales',
     category: 'vegetales',
     categoryLabel: 'Con Vegetales',
     picor: 'medio',
-    heat: 'medio',
     heatLabel: 'Picor Medio',
     tiempo: 'express',
-    timeBucket: 'express',
     timeMinutes: 10,
     servings: 4,
     calories: '290 kcal',
     productUsed: 'Elotes Dorados en Grano 410 g',
     image: 'assets/img/rec-esquites',
-    imagen: 'assets/img/rec-esquites.avif',
-    imagenWebp: 'assets/img/rec-esquites.webp',
     summary: 'Elotes Dorados salteados a la mantequilla con epazote fresco, limón real, queso añejo y mayonesa ahumada de chipotle.',
-    ingredientes: [
-      '1 lata de Elotes Dorados La Costeña (410 g) drenada',
-      '1 cucharada de adobo de Chiles Chipotles La Costeña',
-      '2 cucharadas de mantequilla y 1 rama de epazote picado',
-      '3 cucharadas de mayonesa y jugo de 2 limones',
-      '100 g de queso Cotija rallado'
-    ],
-    ingredients: [
+    ingredientes_locales: [
       '1 lata de Elotes Dorados La Costeña (410 g) drenada',
       '1 cucharada de adobo de Chiles Chipotles La Costeña',
       '2 cucharadas de mantequilla y 1 rama de epazote picado',
@@ -299,33 +194,80 @@ export const RECIPES = [
     ]
   },
   {
+    id: 'rec-enfrijoladas',
+    featured: false,
+    nombre: 'Enfrijoladas de Hogar con Chorizo y Queso Fresco',
+    categoria: 'Frijoles',
+    category: 'frijoles',
+    categoryLabel: 'Con Frijoles',
+    picor: 'suave',
+    heatLabel: 'Picor Suave',
+    tiempo: 'tradicional',
+    timeMinutes: 20,
+    servings: 4,
+    calories: '460 kcal',
+    productUsed: 'Frijoles Bayos Refritos 430 g',
+    image: 'assets/img/rec-enfrijoladas',
+    summary: 'Tortillas recién hechas rellenas de queso panela y cubiertas con una salsa aterciopelada de Frijoles Bayos Refritos y epazote.',
+    ingredientes_locales: [
+      '1 lata de Frijoles Bayos Refritos La Costeña (430 g)',
+      '12 tortillas de maíz calientes',
+      '150 g de chorizo dorado y escurrido',
+      '200 g de queso fresco de Real del Castillo desmoronado',
+      '1 taza de caldo de pollo y rodajas de aguacate'
+    ],
+    steps: [
+      'Licúa los Frijoles Bayos Refritos La Costeña con el caldo caliente hasta lograr una salsa tersa y cremosa.',
+      'Rellena las tortillas calientes con queso fresco, dóblalas y colócalas en el plato.',
+      'Baña generosamente con la salsa de frijol caliente y corona con chorizo dorado y aguacate.'
+    ]
+  },
+  {
+    id: 'rec-huevos-rancheros',
+    featured: false,
+    nombre: 'Huevos Rancheros de Hacienda con Jalapeños en Escabeche',
+    categoria: 'Chiles',
+    category: 'chiles',
+    categoryLabel: 'Con Chiles',
+    picor: 'medio',
+    heatLabel: 'Picor Medio',
+    tiempo: 'express',
+    timeMinutes: 12,
+    servings: 2,
+    calories: '350 kcal',
+    productUsed: 'Chiles Jalapeños Enteros 220 g',
+    image: 'assets/img/rec-huevos-rancheros',
+    summary: 'Huevos estrellados sobre tortilla dorada, cubiertos con Salsa Ranchera tibia y coronados con Chiles Jalapeños y zanahorias en escabeche.',
+    ingredientes_locales: [
+      '1 lata de Chiles Jalapeños Enteros La Costeña (220 g)',
+      '1 frasco de Salsa Ranchera Tatemada La Costeña (250 g)',
+      '4 huevos frescos de granja local',
+      '4 tortillas de maíz pasadas por aceite caliente',
+      'Frijoles Bayos Refritos para acompañar'
+    ],
+    steps: [
+      'Pasa ligeramente las tortillas por aceite caliente para suavizarlas y colócalas de dos en dos por plato.',
+      'Estrella los huevos al gusto y colócalos sobre las tortillas.',
+      'Baña con la Salsa Ranchera caliente y sirve con Chiles Jalapeños y zanahorias en escabeche.'
+    ]
+  },
+  {
     id: 'rec-tacos-dorados',
+    featured: false,
     nombre: 'Tacos Dorados Ahogados en Salsa Ranchera Tatemada',
-    title: 'Tacos Dorados Ahogados en Salsa Ranchera Tatemada',
     categoria: 'Salsas',
     category: 'salsas',
     categoryLabel: 'Con Salsas Caseras',
     picor: 'medio',
-    heat: 'medio',
     heatLabel: 'Picor Medio',
     tiempo: 'tradicional',
-    timeBucket: 'tradicional',
     timeMinutes: 20,
     servings: 4,
     calories: '440 kcal',
     productUsed: 'Salsa Ranchera Tatemada 250 g',
     image: 'assets/img/rec-tacos-dorados',
-    imagen: 'assets/img/rec-tacos-dorados.avif',
-    imagenWebp: 'assets/img/rec-tacos-dorados.webp',
     summary: 'Flautas crujientes de papa y requesón servidas sobre espejo de Salsa Ranchera Tatemada, lechuga fresca y rajas de jalapeño.',
-    ingredientes: [
-      '1 frasco de Salsa Ranchera Tatemada La Costeña (250 g)',
-      '12 tortillas para taquear rellenas de papa con requesón',
-      'Rajas de Chiles Jalapeños La Costeña al gusto',
-      '1 taza de lechuga finamente picada y crema fresca',
-      'Queso fresco desmoronado y aguacate en cubos'
-    ],
-    ingredients: [
+    ingredientes_locales: [
       '1 frasco de Salsa Ranchera Tatemada La Costeña (250 g)',
       '12 tortillas para taquear rellenas de papa con requesón',
       'Rajas de Chiles Jalapeños La Costeña al gusto',
@@ -337,10 +279,197 @@ export const RECIPES = [
       'Calienta la Salsa Ranchera Tatemada La Costeña y forma un espejo abundante en el fondo del plato.',
       'Acomoda los tacos sobre la salsa y corona con lechuga, crema, queso y rajas de jalapeño.'
     ]
+  },
+  {
+    id: 'rec-burrito-baja',
+    featured: false,
+    nombre: 'Burrito Fronterizo de Carne Asada y Frijoles Bayos',
+    categoria: 'Frijoles',
+    category: 'frijoles',
+    categoryLabel: 'Con Frijoles',
+    picor: 'medio',
+    heatLabel: 'Picor Medio',
+    tiempo: 'express',
+    timeMinutes: 14,
+    servings: 2,
+    calories: '510 kcal',
+    productUsed: 'Frijoles Bayos Refritos 430 g',
+    image: 'assets/img/rec-enfrijoladas',
+    summary: 'Tortilla sobaquera rellena de carne asada al carbón, Frijoles Bayos Refritos, guacamole rústico y rajas de jalapeño.',
+    ingredientes_locales: [
+      '1 lata de Frijoles Bayos Refritos La Costeña (430 g)',
+      '2 tortillas de harina estilo Baja California',
+      '250 g de diezmillo de res asado y picado',
+      'Chiles Jalapeños en Escabeche La Costeña en rajas',
+      '1 aguacate machacado con limón'
+    ],
+    steps: [
+      'Calienta los Frijoles Bayos Refritos La Costeña y úntalos generosamente sobre las tortillas de harina tibias.',
+      'Distribuye la carne asada caliente, el aguacate machacado y las rajas de jalapeño.',
+      'Enrolla cerrando los extremos y sella el burrito 1 minuto por lado en comal caliente.'
+    ]
+  },
+  {
+    id: 'rec-tostadas-ceviche-verde',
+    featured: false,
+    nombre: 'Tostadas estilo Ensenada con Salsa Verde de Tomatillo',
+    categoria: 'Salsas',
+    category: 'salsas',
+    categoryLabel: 'Con Salsas Caseras',
+    picor: 'suave',
+    heatLabel: 'Picor Suave',
+    tiempo: 'express',
+    timeMinutes: 12,
+    servings: 4,
+    calories: '310 kcal',
+    productUsed: 'Salsa Verde Mexicana 250 g',
+    image: 'assets/img/rec-chilaquiles',
+    summary: 'Pescado blanco marinado en limón con pepino, cilantro y un baño fresco de Salsa Verde Mexicana de Tomatillo sobre tostadas.',
+    ingredientes_locales: [
+      '1 frasco de Salsa Verde Mexicana La Costeña (250 g)',
+      '400 g de filete de pescado blanco de Ensenada en cubos',
+      'Jugo de 6 limones, 1 pepino picado y cebolla morada',
+      '8 tostadas de maíz horneadas',
+      'Rebanadas de aguacate y cilantro fresco'
+    ],
+    steps: [
+      'Marina el pescado en jugo de limón con sal durante 8 minutos e incorpora pepino y cebolla morada.',
+      'Mezcla la mitad de la Salsa Verde Mexicana La Costeña con el ceviche para darle acidez tatemada.',
+      'Sirve sobre las tostadas y corona con aguacate y más Salsa Verde al gusto.'
+    ]
+  },
+  {
+    id: 'rec-camarones-chipotle',
+    featured: false,
+    nombre: 'Camarones del Pacífico al Chipotle Cremoso',
+    categoria: 'Chiles',
+    category: 'chiles',
+    categoryLabel: 'Con Chiles',
+    picor: 'alto',
+    heatLabel: 'Picor Intenso',
+    tiempo: 'tradicional',
+    timeMinutes: 22,
+    servings: 4,
+    calories: '430 kcal',
+    productUsed: 'Chiles Chipotles Adobados 215 g',
+    image: 'assets/img/rec-tinga',
+    summary: 'Camarones salteados en mantequilla de ajo y bañados en salsa aterciopelada de crema y Chiles Chipotles Adobados.',
+    ingredientes_locales: [
+      '1 lata de Chiles Chipotles Adobados La Costeña (215 g)',
+      '500 g de camarón mediano limpio de Baja California',
+      '1 taza de crema ácida y 1/2 taza de leche evaporada',
+      '2 dientes de ajo picados y 2 cucharadas de mantequilla',
+      'Arroz blanco al vapor para acompañar'
+    ],
+    steps: [
+      'Licúa la crema, la leche evaporada y de 2 a 3 Chiles Chipotles Adobados La Costeña con su adobo.',
+      'Saltea los camarones con ajo y mantequilla durante 3 minutos hasta que cambien de color.',
+      'Vierte la salsa de chipotle, cocina a fuego suave por 5 minutos hasta espesar y sirve con arroz.'
+    ]
+  },
+  {
+    id: 'rec-sopa-tortilla-ranchera',
+    featured: false,
+    nombre: 'Sopa Azteca Express con Salsa Ranchera Tatemada',
+    categoria: 'Salsas',
+    category: 'salsas',
+    categoryLabel: 'Con Salsas Caseras',
+    picor: 'medio',
+    heatLabel: 'Picor Medio',
+    tiempo: 'express',
+    timeMinutes: 15,
+    servings: 4,
+    calories: '340 kcal',
+    productUsed: 'Salsa Ranchera Tatemada 250 g',
+    image: 'assets/img/rec-tacos-dorados',
+    summary: 'Caldillo reconfortante preparado en minutos con Salsa Ranchera Tatemada, julianas de tortilla crujiente, aguacate y queso.',
+    ingredientes_locales: [
+      '1 frasco de Salsa Ranchera Tatemada La Costeña (250 g)',
+      '3 tazas de caldo de pollo casero y 1 rama de epazote',
+      '200 g de tiras de tortilla de maíz doradas',
+      '150 g de queso panela en cubos y 1 aguacate',
+      'Crema fresca para decorar'
+    ],
+    steps: [
+      'Vierte la Salsa Ranchera Tatemada La Costeña en una olla con el caldo de pollo y el epazote; hierve 8 minutos.',
+      'Reparte las tiras de tortilla dorada, el queso panela y el aguacate en tazones hondos.',
+      'Sirve el caldillo bien caliente al momento y añade un toque de crema.'
+    ]
+  },
+  {
+    id: 'rec-ensalada-elotes-tijuana',
+    featured: false,
+    nombre: 'Ensalada Fresca de Elotes Dorados y Aguacate',
+    categoria: 'Vegetales',
+    category: 'vegetales',
+    categoryLabel: 'Con Vegetales',
+    picor: 'suave',
+    heatLabel: 'Picor Suave',
+    tiempo: 'express',
+    timeMinutes: 10,
+    servings: 4,
+    calories: '240 kcal',
+    productUsed: 'Elotes Dorados en Grano 410 g',
+    image: 'assets/img/rec-esquites',
+    summary: 'Guarnición ligera para carnes asadas con Elotes Dorados Dulces, jitomate cherry, aguacate, cilantro y vinagreta de limón.',
+    ingredientes_locales: [
+      '1 lata de Elotes Dorados La Costeña (410 g) drenada',
+      '1 taza de jitomates cherry de San Quintín partidos a la mitad',
+      '1 aguacate firme en cubos y 1/4 de cebolla morada picada',
+      'Jugo de 2 limones, aceite de oliva del Valle de Guadalupe y cilantro',
+      'Queso fresco desmoronado al gusto'
+    ],
+    steps: [
+      'En un tazón amplio mezcla los Elotes Dorados La Costeña con los jitomates cherry y la cebolla morada.',
+      'Emulsiona el jugo de limón con el aceite de oliva, sal y pimienta e incorpóralo a la ensalada.',
+      'Agrega el aguacate, el cilantro fresco y el queso desmoronado justo antes de servir.'
+    ]
+  },
+  {
+    id: 'rec-molletes-jalapeno',
+    featured: false,
+    nombre: 'Molletes Gratinados con Frijoles Bayos y Pico de Jalapeño',
+    categoria: 'Frijoles',
+    category: 'frijoles',
+    categoryLabel: 'Con Frijoles',
+    picor: 'medio',
+    heatLabel: 'Picor Medio',
+    tiempo: 'express',
+    timeMinutes: 12,
+    servings: 4,
+    calories: '390 kcal',
+    productUsed: 'Frijoles Bayos Refritos 430 g',
+    image: 'assets/img/rec-huevos-rancheros',
+    summary: 'Bolillos crujientes untados con Frijoles Bayos Refritos, queso menonita fundido y pico de gallo con Chiles Jalapeños en Escabeche.',
+    ingredientes_locales: [
+      '1 lata de Frijoles Bayos Refritos La Costeña (430 g)',
+      '1 lata de Chiles Jalapeños Enteros La Costeña (220 g) picados con su zanahoria',
+      '4 bolillos artesanales partidos a la mitad',
+      '200 g de queso manchego o menonita rallado',
+      '2 jitomates picados con cebolla y cilantro'
+    ],
+    steps: [
+      'Tuesta ligeramente las mitades de bolillo y unta una capa abundante de Frijoles Bayos Refritos La Costeña.',
+      'Cubre con el queso rallado y gratina en horno o sartén tapado durante 5 minutos.',
+      'Mezcla el jitomate con los Chiles Jalapeños La Costeña picados y sirve sobre los molletes calientes.'
+    ]
   }
 ];
 
+export const RECIPES = RAW_RECIPES.map((r) => ({
+  ...r,
+  title: r.nombre,
+  heat: r.picor,
+  timeBucket: r.tiempo,
+  imagen: `${r.image}.avif`,
+  imagenWebp: `${r.image}.webp`,
+  ingredientes: r.ingredientes_locales,
+  ingredients: r.ingredientes_locales,
+  deep_link_whatsapp: makeWaLink(r.nombre, r.ingredientes_locales)
+}));
+
 export const RECETAS = RECIPES;
+export const FEATURED_RECIPES = RECIPES.filter((r) => r.featured).slice(0, 3);
 
 /**
  * Pure matrix filtering function (shared by UI and unit tests).
@@ -357,7 +486,7 @@ export function filterRecipes(recipes, { category = 'all', heat = 'all', time = 
     const rHeat = (r.picor || r.heat || '').toLowerCase();
     const rTime = (r.tiempo || r.timeBucket || '').toLowerCase();
     const rTitle = r.nombre || r.title || '';
-    const rIng = (r.ingredientes || r.ingredients || []).join(' ');
+    const rIng = (r.ingredientes_locales || r.ingredientes || r.ingredients || []).join(' ');
 
     if (catNorm !== 'all' && rCat !== catNorm) return false;
     if (heatNorm !== 'all' && rHeat !== heatNorm) return false;
@@ -365,4 +494,32 @@ export function filterRecipes(recipes, { category = 'all', heat = 'all', time = 
     if (q && !`${rTitle} ${r.summary || ''} ${r.productUsed || ''} ${rIng}`.toLowerCase().includes(q)) return false;
     return true;
   });
+}
+
+export function buildRecipeSchemaNodes(recipesList) {
+  return recipesList.map((r) => ({
+    '@type': 'Recipe',
+    '@id': `https://www.lacostena.com.mx/#${r.id}`,
+    name: r.nombre,
+    author: { '@type': 'Organization', name: 'La Costeña' },
+    description: r.summary,
+    image: [
+      `https://www.lacostena.com.mx/${r.image}.avif`,
+      `https://www.lacostena.com.mx/${r.image}.webp`
+    ],
+    totalTime: `PT${r.timeMinutes}M`,
+    recipeYield: `${r.servings} porciones`,
+    recipeCategory: r.categoria,
+    recipeCuisine: 'Mexicana',
+    nutrition: {
+      '@type': 'NutritionInformation',
+      calories: r.calories
+    },
+    recipeIngredient: r.ingredientes_locales,
+    recipeInstructions: r.steps.map((stepText, idx) => ({
+      '@type': 'HowToStep',
+      position: idx + 1,
+      text: stepText
+    }))
+  }));
 }

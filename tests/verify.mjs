@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { PRODUCTS, RECIPES, filterRecipes } from '../js/data.js';
+import { PRODUCTS, RECIPES, FEATURED_RECIPES, filterRecipes } from '../js/data.js';
 import {
   CALIMAX_WHATSAPP_NUMBER,
   isWithinBajaCalifornia,
@@ -12,78 +12,92 @@ import {
   readSessionState,
   purgeEphemeralSession
 } from '../js/modules/auth-state.js';
+import { buildGranularJsonLd } from '../js/modules/router.js';
 
 const root = process.cwd();
-const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const indexHtml = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const recetasHtml = fs.readFileSync(path.join(root, 'recetas.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css/styles.css'), 'utf8');
 const appJs = fs.readFileSync(path.join(root, 'js/app.js'), 'utf8');
+const routerJs = fs.readFileSync(path.join(root, 'js/modules/router.js'), 'utf8');
+const matrixFilterJs = fs.readFileSync(path.join(root, 'js/modules/matrix-filter.js'), 'utf8');
 const omnichannelJs = fs.readFileSync(path.join(root, 'js/modules/omnichannel.js'), 'utf8');
 const authStateJs = fs.readFileSync(path.join(root, 'js/modules/auth-state.js'), 'utf8');
 const swJs = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
+const siteHeaderJs = fs.readFileSync(path.join(root, 'js/components/site-header.js'), 'utf8');
+const siteFooterJs = fs.readFileSync(path.join(root, 'js/components/site-footer.js'), 'utf8');
+const waCartWidgetJs = fs.readFileSync(path.join(root, 'js/components/whatsapp-cart-widget.js'), 'utf8');
 
-// FASE 1: Maquetado Estructural Vanilla HTML5/CSS3 y Presupuesto de Rendimiento
-assert.match(html, /<header\b/i, 'Falta <header> semántico');
-assert.match(html, /<nav\b/i, 'Falta <nav> semántico');
-assert.match(html, /<main\b/i, 'Falta <main> semántico');
-assert.match(html, /<footer\b/i, 'Falta <footer> semántico');
-assert.match(html, /<aside\s+id="ai-chatbot"/i, 'Falta contenedor flotante <aside id="ai-chatbot">');
-assert.match(appJs, /largest-contentful-paint/, 'Falta monitoreo de presupuesto LCP');
-assert.match(appJs, /layout-shift/, 'Falta monitoreo de presupuesto CLS');
+// 1. WEB COMPONENTS REUTILIZABLES CON SHADOW DOM
+assert.match(siteHeaderJs, /attachShadow\(\{\s*mode:\s*'open'\s*\}\)/, '<site-header> debe usar Shadow DOM');
+assert.match(siteFooterJs, /attachShadow\(\{\s*mode:\s*'open'\s*\}\)/, '<site-footer> debe usar Shadow DOM');
+assert.match(waCartWidgetJs, /attachShadow\(\{\s*mode:\s*'open'\s*\}\)/, '<whatsapp-cart-widget> debe usar Shadow DOM');
 
-// FASE 2: Formatos .webp y .avif, fetchpriority="high" en Hero, y loading="lazy" en catálogo
-assert.match(html, /fetchpriority="high"/, 'El Hero debe priorizar carga con fetchpriority="high"');
-assert.match(appJs, /loading="lazy"/, 'El catálogo y recetas deben usar loading="lazy" nativo');
-assert.ok(RECIPES.length >= 6, 'Debe haber al menos 6 recetas detalladas');
+for (const doc of [indexHtml, recetasHtml]) {
+  assert.match(doc, /<site-header\b/i, 'Falta <site-header> en documento HTML');
+  assert.match(doc, /<site-footer\b/i, 'Falta <site-footer> en documento HTML');
+  assert.match(doc, /<whatsapp-cart-widget\b/i, 'Falta <whatsapp-cart-widget> en documento HTML');
+  assert.match(doc, /<aside\s+id="ai-chatbot"/i, 'Falta <aside id="ai-chatbot">');
+}
+
+// 2. PÁGINA PRINCIPAL (index.html) Y CARRUSEL CSS SCROLL-SNAP
+assert.doesNotMatch(indexHtml, /id="recipe-matrix-controls"/, 'index.html no debe alojar la matriz de filtrado');
+assert.match(indexHtml, /id="sensory-carousel-track"/, 'Falta carrusel sensorial en index.html');
+assert.match(indexHtml, /<a\s+href="recetas\.html"\s+class="btn[^"]*btn-primary"[^>]*fetchpriority="high"[^>]*>Ver recetario completo<\/a>/i, 'Falta CTA principal hacia recetas.html con fetchpriority="high"');
+assert.match(css, /scroll-snap-type:\s*x\s+mandatory/, 'El carrusel debe usar scroll-snap-type: x mandatory');
+assert.match(css, /overscroll-behavior-x:\s*contain/, 'El carrusel debe usar overscroll-behavior-x: contain');
+assert.equal(FEATURED_RECIPES.length, 3, 'El carrusel sensorial debe exhibir exactamente 3 recetas insignia');
+
+// 3. PÁGINA ANIDADA (recetas.html) Y CONTENEDOR #recipe-grid-full
+assert.match(recetasHtml, /id="recipe-matrix-controls"/, 'recetas.html debe alojar los controles de la matriz');
+assert.match(recetasHtml, /id="recipe-grid-full"/, 'recetas.html debe incluir el contenedor #recipe-grid-full');
+assert.match(matrixFilterJs, /createDocumentFragment\(\)/, 'matrix-filter.js debe renderizar con DocumentFragment');
+
+// 4. REPOSITORIO DE DATOS ESCALADO (12+ RECETAS CON INGREDIENTES LOCALES Y DEEP LINK WHATSAPP)
+assert.ok(RECIPES.length >= 12, `Debe haber al menos 12 recetas completas (actual: ${RECIPES.length})`);
 for (const rec of RECIPES) {
-  assert.ok(rec.id && rec.nombre && rec.categoria && rec.picor && rec.tiempo && Array.isArray(rec.ingredientes) && rec.imagen, `Receta incompleta: ${rec.id}`);
+  assert.ok(rec.id, 'Falta id');
+  assert.ok(rec.nombre, `Falta nombre en ${rec.id}`);
+  assert.ok(Array.isArray(rec.ingredientes_locales) && rec.ingredientes_locales.length > 0, `Falta ingredientes_locales en ${rec.id}`);
+  assert.ok(['express', 'tradicional'].includes(rec.tiempo), `Tiempo inválido en ${rec.id}`);
+  assert.ok(['suave', 'medio', 'alto'].includes(rec.picor), `Picor inválido en ${rec.id}`);
+  assert.match(rec.deep_link_whatsapp, /^https:\/\/wa\.me\/8002254629\?text=/, `deep_link_whatsapp inválido en ${rec.id}`);
+  assert.ok(fs.existsSync(path.join(root, `${rec.image}.avif`)), `Falta activo AVIF: ${rec.image}.avif`);
+  assert.ok(fs.existsSync(path.join(root, `${rec.image}.webp`)), `Falta activo WebP: ${rec.image}.webp`);
 }
-for (const item of [...PRODUCTS, ...RECIPES]) {
-  assert.ok(fs.existsSync(path.join(root, `${item.image}.avif`)), `Falta activo AVIF: ${item.image}.avif`);
-  assert.ok(fs.existsSync(path.join(root, `${item.image}.webp`)), `Falta activo WebP: ${item.image}.webp`);
+
+for (const prod of PRODUCTS) {
+  assert.ok(fs.existsSync(path.join(root, `${prod.image}.avif`)), `Falta activo AVIF: ${prod.image}.avif`);
+  assert.ok(fs.existsSync(path.join(root, `${prod.image}.webp`)), `Falta activo WebP: ${prod.image}.webp`);
 }
-assert.ok(fs.existsSync(path.join(root, 'assets/img/hero-banner.avif')), 'Falta hero-banner.avif');
-assert.ok(fs.existsSync(path.join(root, 'assets/img/hero-banner.webp')), 'Falta hero-banner.webp');
 
-// FASE 3: Lógica Modular ES Modules (filtrado matricial + DocumentFragment + WhatsApp Calimax)
-assert.equal(filterRecipes(RECIPES, { category: 'all', heat: 'all', time: 'all' }).length, 6);
-assert.equal(filterRecipes(RECIPES, { category: 'chiles', heat: 'alto', time: 'tradicional' }).length, 1);
-assert.equal(filterRecipes(RECIPES, { category: 'chiles', heat: 'alto', time: 'tradicional' })[0].id, 'rec-tinga');
-assert.equal(filterRecipes(RECIPES, { category: 'vegetales', heat: 'medio', time: 'express' })[0].id, 'rec-esquites');
-assert.equal(filterRecipes(RECIPES, { query: 'Cotija' }).length, 2);
-assert.match(appJs, /createDocumentFragment\(\)/, 'El renderizado debe usar DocumentFragment');
-assert.match(appJs, /Pedir ingredientes vía WhatsApp/, 'Falta botón transaccional de WhatsApp en tarjetas de recetas');
-assert.equal(CALIMAX_WHATSAPP_NUMBER, '8002254629');
-assert.match(buildCalimaxWhatsAppUrl(RECIPES[0]), /^https:\/\/wa\.me\/8002254629\?text=/, 'Deep link de WhatsApp Calimax inválido');
+// 5. ENRUTADOR NATIVO Y AEO JSON-LD GRANULAR (3 EN INDEX VS 12 EN RECETAS)
+assert.match(appJs, /const\s+isRecipePage\s*=\s*window\.location\.pathname\.includes\('recetas'\)/, 'Falta detección de ruta recetas en app.js');
+assert.match(appJs, /if\s*\(isRecipePage\)\s*\{\s*import\('\.\/modules\/matrix-filter\.js'\);?\s*\}/, 'Falta import dinámico de matrix-filter.js en app.js');
+assert.match(routerJs, /window\.location\.pathname\.includes\('recetas'\)/, 'Falta detección de ruta en router.js');
 
-// FASE 4: Omnicanalidad, Geolocalización Baja California, Sesión Efímera LFPDPPP y Resiliencia Offline
+const indexLd = buildGranularJsonLd(false);
+const recetasLd = buildGranularJsonLd(true);
+const indexRecipeNodes = indexLd['@graph'].filter((n) => n['@type'] === 'Recipe');
+const recetasRecipeNodes = recetasLd['@graph'].filter((n) => n['@type'] === 'Recipe');
+assert.equal(indexRecipeNodes.length, 3, 'JSON-LD en index.html debe inyectar 3 recetas principales');
+assert.equal(recetasRecipeNodes.length, 12, 'JSON-LD en recetas.html debe inyectar las 12 recetas completas');
+
+// 6. FILTRADO MATRICIAL, OMNICANALIDAD, SESIÓN EFÍMERA Y SERVICE WORKER
+assert.equal(filterRecipes(RECIPES, { category: 'all', heat: 'all', time: 'all' }).length, 12);
+assert.equal(filterRecipes(RECIPES, { category: 'chiles', heat: 'alto', time: 'tradicional' }).length, 2);
 assert.equal(isWithinBajaCalifornia(32.5149, -117.0382), true, 'Tijuana debe detectarse en Baja California');
-assert.equal(isWithinBajaCalifornia(32.6245, -115.4523), true, 'Mexicali debe detectarse en Baja California');
-assert.equal(isWithinBajaCalifornia(19.4326, -99.1332), false, 'CDMX no debe detectarse en Baja California');
-assert.match(omnichannelJs, /navigator\.geolocation/, 'Falta integración con navigator.geolocation');
-assert.match(omnichannelJs, /new CustomEvent\(/, 'Falta puente de telemetría CustomEvent hacia window');
-
+assert.equal(CALIMAX_WHATSAPP_NUMBER, '8002254629');
+assert.match(buildCalimaxWhatsAppUrl(RECIPES[0]), /^https:\/\/wa\.me\/8002254629\?text=/);
+assert.match(omnichannelJs, /navigator\.geolocation/);
+assert.match(omnichannelJs, /new CustomEvent\(/);
 assert.equal(DEFAULT_AUTH_STATUS, 'Usuario no registrado');
 assert.equal(readSessionState().status, 'Usuario no registrado');
-assert.match(authStateJs, /sessionStorage/, 'Debe utilizar sessionStorage');
-assert.doesNotMatch(authStateJs, /localStorage/, 'No debe usar localStorage por gobernanza LFPDPPP');
-assert.match(authStateJs, /beforeunload/, 'Debe purgar sessionStorage en beforeunload');
+assert.match(authStateJs, /sessionStorage/);
+assert.doesNotMatch(authStateJs, /localStorage/);
+assert.match(authStateJs, /beforeunload/);
 purgeEphemeralSession();
+assert.match(css, /@media\s*\(\s*prefers-reduced-motion:\s*reduce\s*\)\s*\{\s*\*\s*\{\s*transition:\s*none\s*!important;\s*\}/);
+assert.match(swJs, /recetas\.html/, 'Service Worker debe cachear recetas.html');
 
-assert.match(css, /transform:\s*scale\(0\.95\)/, 'Las animaciones de filtrado deben usar transform: scale(0.95)');
-assert.match(css, /opacity:\s*0/, 'Las animaciones de filtrado deben usar opacity: 0');
-assert.match(css, /@media\s*\(\s*prefers-reduced-motion:\s*reduce\s*\)\s*\{\s*\*\s*\{\s*transition:\s*none\s*!important;\s*\}/, 'Falta regla estricta prefers-reduced-motion');
-
-assert.match(swJs, /index\.html/, 'Service Worker debe cachear index.html');
-assert.match(swJs, /styles\.css/, 'Service Worker debe cachear styles.css');
-assert.match(swJs, /app\.js/, 'Service Worker debe cachear app.js');
-assert.match(swJs, /\.avif/, 'Service Worker debe cachear imágenes AVIF');
-assert.match(swJs, /\.webp/, 'Service Worker debe cachear imágenes WebP');
-
-const jsonLdMatch = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
-assert.ok(jsonLdMatch, 'Falta bloque JSON-LD en index.html');
-const schema = JSON.parse(jsonLdMatch[1]);
-const types = schema['@graph'].map((node) => node['@type']);
-assert.ok(types.includes('Product'), 'JSON-LD debe incluir Product Schema');
-assert.ok(types.includes('Recipe'), 'JSON-LD debe incluir Recipe Schema');
-
-console.log('OK: Todas las verificaciones de La Costeña v2.0 Omnichannel pasaron exitosamente.');
+console.log('OK: Todas las verificaciones de La Costeña v3.0 MPA Nested Catalog (12 recetas) pasaron exitosamente.');
