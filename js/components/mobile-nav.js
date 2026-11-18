@@ -22,12 +22,6 @@ const BOTTOM_NAV_TEMPLATE = `
         font-family: 'Nunito Sans', system-ui, -apple-system, sans-serif;
       }
     }
-    @media (max-width: 768px) and (prefers-color-scheme: dark) {
-      :host {
-        background: rgba(30, 30, 30, 0.88);
-        border-top-color: rgba(234, 234, 234, 0.16);
-      }
-    }
     .thumb-bar {
       display: grid;
       grid-template-columns: repeat(4, 1fr);

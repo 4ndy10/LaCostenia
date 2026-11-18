@@ -45,18 +45,5 @@
   --radius-md: 0.875rem;
   --radius-lg: 1.25rem;
   --ease-gpu: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --surface: #1E1E1E;
-    --surface-elevated: #2A2A2A;
-    --surface-card: #252525;
-    --text: #EAEAEA;
-    --text-muted: #B8B5AD;
-    --glass-bg: rgba(30, 30, 30, 0.78);
-    --glass-border: rgba(234, 234, 234, 0.16);
-    --color-border: #3D3D3D;
-    --color-herb-bg: rgba(4, 120, 87, 0.22);
-  }
+  color-scheme: light;
 }

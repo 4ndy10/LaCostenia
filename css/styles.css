@@ -39,19 +39,7 @@
   --radius-md: 0.875rem;
   --radius-lg: 1.25rem;
   --ease-gpu: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --surface: #1E1E1E;
-    --text: #EAEAEA;
-    --color-bg-canvas: #1E1E1E;
-    --color-bg-surface: #262626;
-    --color-bg-elevated: #2F2F2F;
-    --color-text-primary: #EAEAEA;
-    --color-text-secondary: #C4C1B8;
-    --color-border: #3E3E3E;
-  }
+  color-scheme: light;
 }
 
 /* Clase Utilitaria Glassmorphism V4 (.glass-panel) */
@@ -60,13 +48,6 @@
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(28, 28, 28, 0.14);
-}
-
-@media (prefers-color-scheme: dark) {
-  .glass-panel {
-    background: rgba(30, 30, 30, 0.78);
-    border-color: rgba(234, 234, 234, 0.16);
-  }
 }
 
 *,

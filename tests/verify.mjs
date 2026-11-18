@@ -140,7 +140,8 @@ const spatialLightingJs = fs.readFileSync(path.join(root, 'js/modules/spatial-li
 assert.match(variablesCss, /--primary:\s*#C8102E/i, 'Falta --primary: #C8102E en variables.css');
 assert.match(variablesCss, /--surface:\s*#FDFBF7/i, 'Falta --surface: #FDFBF7 en variables.css');
 assert.match(variablesCss, /--text:\s*#1C1C1C/i, 'Falta --text: #1C1C1C en variables.css');
-assert.match(variablesCss, /@media\s*\(\s*prefers-color-scheme:\s*dark\s*\)[\s\S]*?--surface:\s*#1E1E1E[\s\S]*?--text:\s*#EAEAEA/i, 'Falta modo oscuro automático en variables.css');
+assert.doesNotMatch(variablesCss, /prefers-color-scheme:\s*dark/i, 'No debe existir modo oscuro automático en variables.css');
+assert.doesNotMatch(css, /prefers-color-scheme:\s*dark/i, 'No debe existir modo oscuro automático en styles.css');
 assert.match(css, /\.glass-panel\s*\{[\s\S]*?backdrop-filter:\s*blur\(12px\)/i, 'Falta .glass-panel con backdrop-filter: blur(12px)');
 
 assert.match(mobileNavJs, /customElements\.define\('bottom-nav'/, 'Falta registro de <bottom-nav>');
