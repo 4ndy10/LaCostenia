@@ -1,4 +1,16 @@
 import { PRODUCTS, RECIPES, filterRecipes } from './data.js';
+import {
+  buildCalimaxWhatsAppUrl,
+  initOmnichannel,
+  syncCalimaxButtonsDOM,
+  emitOmnichannelEvent
+} from './modules/omnichannel.js';
+import {
+  initAuthState,
+  toggleFavoriteRecipe,
+  isFavoriteRecipe,
+  recordChatInteraction
+} from './modules/auth-state.js';
 
 const state = {
   category: 'all',
@@ -81,6 +93,8 @@ function renderRecipes() {
   const countBadge = document.getElementById('recipe-count-badge');
   if (!grid) return;
 
+  grid.classList.add('is-filtering');
+
   const matched = filterRecipes(RECIPES, state);
   const frag = document.createDocumentFragment();
 
@@ -94,27 +108,50 @@ function renderRecipes() {
     frag.appendChild(empty);
   } else {
     for (const rec of matched) {
+      const title = rec.nombre || rec.title;
+      const fav = isFavoriteRecipe(rec.id);
+      const waUrl = buildCalimaxWhatsAppUrl(rec);
       const card = document.createElement('article');
       card.className = 'recipe-card gpu-card';
       card.innerHTML = `
         <div class="recipe-media">
-          ${createPictureHTML(rec.image, `Platillo terminado: ${rec.title}`, 640, 420, false)}
+          ${createPictureHTML(rec.image, `Platillo terminado: ${title}`, 640, 420, false)}
           <span class="recipe-time-badge">${rec.timeMinutes} min · ${rec.servings} porciones</span>
+          <button
+            type="button"
+            class="btn-fav-recipe"
+            data-recipe-id="${rec.id}"
+            aria-pressed="${fav}"
+            aria-label="Guardar ${title} en favoritos de sesión"
+          >
+            ${fav ? '★ Guardada' : '☆ Favorita'}
+          </button>
         </div>
         <div class="recipe-body">
           <div class="recipe-tags">
             <span class="tag-pill">${rec.categoryLabel}</span>
-            <span class="heat-pill heat-${rec.heat}">${rec.heatLabel}</span>
+            <span class="heat-pill heat-${rec.picor || rec.heat}">${rec.heatLabel}</span>
           </div>
-          <h3 class="recipe-title">${rec.title}</h3>
+          <h3 class="recipe-title">${title}</h3>
           <p class="recipe-summary">${rec.summary}</p>
           <p class="recipe-ingredient-highlight">
             <strong>Ingrediente estrella:</strong> ${rec.productUsed}
           </p>
           <div class="recipe-actions">
+            <a
+              href="${waUrl}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-whatsapp-calimax is-bc-active"
+              data-recipe-id="${rec.id}"
+              data-recipe-name="${title}"
+              data-bc-active="true"
+            >
+              Pedir ingredientes vía WhatsApp
+            </a>
             <button
               type="button"
-              class="btn btn-primary btn-open-recipe"
+              class="btn btn-secondary btn-open-recipe"
               data-recipe-id="${rec.id}"
               aria-haspopup="dialog"
             >
@@ -128,6 +165,13 @@ function renderRecipes() {
   }
 
   grid.replaceChildren(frag);
+  syncCalimaxButtonsDOM();
+
+  if (typeof requestAnimationFrame === 'function') {
+    requestAnimationFrame(() => grid.classList.remove('is-filtering'));
+  } else {
+    grid.classList.remove('is-filtering');
+  }
 
   if (countBadge) {
     countBadge.textContent = `${matched.length} de ${RECIPES.length} recetas`;
@@ -154,7 +198,7 @@ function setupMatrixFilters() {
 
   if (matrixForm) {
     matrixForm.addEventListener('click', (e) => {
-      const btn = e.target.closest('button[data-axis]');
+      const btn = e.target.closest('.filter-chip');
       if (!btn) return;
       const axis = btn.dataset.axis;
       const value = btn.dataset.value;
@@ -162,7 +206,7 @@ function setupMatrixFilters() {
 
       const group = btn.closest('[role="group"]');
       if (group) {
-        for (const sibling of group.querySelectorAll('button[data-axis]')) {
+        for (const sibling of group.querySelectorAll('.filter-chip')) {
           sibling.setAttribute('aria-pressed', String(sibling === btn));
         }
       }
@@ -184,7 +228,7 @@ function setupMatrixFilters() {
     state.query = '';
     if (searchInput) searchInput.value = '';
     if (matrixForm) {
-      for (const btn of matrixForm.querySelectorAll('button[data-axis]')) {
+      for (const btn of matrixForm.querySelectorAll('.filter-chip')) {
         btn.setAttribute('aria-pressed', String(btn.dataset.value === 'all'));
       }
     }
@@ -198,12 +242,19 @@ function setupMatrixFilters() {
       resetAll();
       return;
     }
+    const favBtn = e.target.closest('.btn-fav-recipe');
+    if (favBtn) {
+      const isFav = toggleFavoriteRecipe(favBtn.dataset.recipeId);
+      favBtn.setAttribute('aria-pressed', String(isFav));
+      favBtn.textContent = isFav ? '★ Guardada' : '☆ Favorita';
+      return;
+    }
     const prodFilterBtn = e.target.closest('.btn-filter-by-product');
     if (prodFilterBtn) {
       const cat = prodFilterBtn.dataset.filterCategory;
       state.category = cat;
       if (matrixForm) {
-        for (const btn of matrixForm.querySelectorAll('button[data-axis="category"]')) {
+        for (const btn of matrixForm.querySelectorAll('.filter-chip[data-axis="category"]')) {
           btn.setAttribute('aria-pressed', String(btn.dataset.value === cat));
         }
       }
@@ -227,13 +278,17 @@ function openRecipeModal(recipeId, triggerEl) {
   const content = document.getElementById('recipe-dialog-content');
   if (!rec || !dialog || !content) return;
 
+  const title = rec.nombre || rec.title;
+  const ingredients = rec.ingredientes || rec.ingredients || [];
+  const waUrl = buildCalimaxWhatsAppUrl(rec);
+
   lastTriggerElement = triggerEl || null;
   content.innerHTML = `
     <div class="dialog-header">
       <div>
         <span class="tag-pill">${rec.categoryLabel}</span>
-        <span class="heat-pill heat-${rec.heat}">${rec.heatLabel}</span>
-        <h2 id="dialog-recipe-title" class="dialog-title">${rec.title}</h2>
+        <span class="heat-pill heat-${rec.picor || rec.heat}">${rec.heatLabel}</span>
+        <h2 id="dialog-recipe-title" class="dialog-title">${title}</h2>
       </div>
       <button type="button" class="btn-icon-close" id="btn-close-dialog" aria-label="Cerrar ventana de receta">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
@@ -250,7 +305,7 @@ function openRecipeModal(recipeId, triggerEl) {
       <div class="dialog-col">
         <h3>Ingredientes</h3>
         <ul class="dialog-list">
-          ${rec.ingredients.map((i) => `<li>${i}</li>`).join('')}
+          ${ingredients.map((i) => `<li>${i}</li>`).join('')}
         </ul>
       </div>
       <div class="dialog-col">
@@ -259,6 +314,18 @@ function openRecipeModal(recipeId, triggerEl) {
           ${rec.steps.map((s) => `<li>${s}</li>`).join('')}
         </ol>
       </div>
+    </div>
+    <div class="dialog-footer-actions">
+      <a
+        href="${waUrl}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn btn-whatsapp-calimax is-bc-active"
+        data-recipe-id="${rec.id}"
+        data-recipe-name="${title}"
+      >
+        Pedir ingredientes vía WhatsApp (Calimax BC)
+      </a>
     </div>
   `;
 
@@ -272,6 +339,61 @@ function openRecipeModal(recipeId, triggerEl) {
   if (closeBtn) {
     closeBtn.focus();
     closeBtn.addEventListener('click', () => dialog.close(), { once: true });
+  }
+}
+
+function setupChatbot() {
+  const toggleBtn = document.getElementById('chatbot-toggle');
+  const closeBtn = document.getElementById('chatbot-close');
+  const panel = document.getElementById('chatbot-panel');
+  const form = document.getElementById('chatbot-form');
+  const input = document.getElementById('chatbot-input');
+  const messages = document.getElementById('chatbot-messages');
+  if (!toggleBtn || !panel) return;
+
+  const setOpen = (open) => {
+    toggleBtn.setAttribute('aria-expanded', String(open));
+    panel.hidden = !open;
+    if (open && input) input.focus();
+  };
+
+  toggleBtn.addEventListener('click', () => {
+    setOpen(toggleBtn.getAttribute('aria-expanded') !== 'true');
+  });
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      setOpen(false);
+      toggleBtn.focus();
+    });
+  }
+
+  if (form && input && messages) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const q = input.value.trim();
+      if (!q) return;
+      input.value = '';
+
+      const matches = filterRecipes(RECIPES, { query: q });
+      const reply = matches.length > 0
+        ? `Te recomiendo preparar "${matches[0].nombre}" (${matches[0].timeMinutes} min, ${matches[0].heatLabel}). Puedes pedir sus ingredientes en Calimax vía WhatsApp.`
+        : 'Puedo ayudarte a filtrar por Chiles, Salsas, Frijoles o Vegetales, o conectarte con Calimax en el 800-225-4629.';
+
+      recordChatInteraction(q, reply);
+      emitOmnichannelEvent('chatbot_query', { query: q, matches: matches.length });
+
+      const userDiv = document.createElement('div');
+      userDiv.className = 'chat-msg chat-msg-user';
+      userDiv.textContent = q;
+
+      const botDiv = document.createElement('div');
+      botDiv.className = 'chat-msg chat-msg-bot';
+      botDiv.textContent = reply;
+
+      messages.append(userDiv, botDiv);
+      messages.scrollTop = messages.scrollHeight;
+    });
   }
 }
 
@@ -360,12 +482,26 @@ function setupPerformanceAudit() {
   }
 }
 
+function registerServiceWorker() {
+  if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(() => {
+        // Ignore registration errors on file:// protocol
+      });
+    });
+  }
+}
+
 function init() {
+  initAuthState();
   renderProducts();
   renderRecipes();
   setupMatrixFilters();
+  setupChatbot();
   setupDialogAndNav();
+  initOmnichannel();
   setupPerformanceAudit();
+  registerServiceWorker();
 }
 
 if (typeof document !== 'undefined') {

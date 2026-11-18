@@ -185,15 +185,17 @@
 <body>
   <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
 
-  <!-- Fase 1: Barra de Auditoría de Presupuestos de Rendimiento (LCP, INP, CLS) -->
-  <aside class="perf-bar" aria-label="Auditoría de presupuesto de rendimiento en tiempo real">
+  <!-- Fase 1: Barra de Auditoría de Presupuestos de Rendimiento (LCP, INP, CLS) y Telemetría Omnicanal -->
+  <aside class="perf-bar" aria-label="Auditoría de presupuesto de rendimiento y telemetría en tiempo real">
     <div class="container perf-bar-inner">
-      <span class="perf-title">Presupuesto Web Vitals Activo (0 Frameworks)</span>
+      <span class="perf-title">Telemetría Web Vitals &amp; Omnicanal v2.0 (0 Frameworks)</span>
       <ul class="perf-metrics">
         <li>LCP (&le;2500ms): <strong id="metric-lcp">&lt; 180 ms</strong></li>
         <li>INP (&le;200ms): <strong id="metric-inp">&lt; 16 ms</strong></li>
         <li>CLS (&le;0.10): <strong id="metric-cls">0.000</strong></li>
-        <li>Formatos: <strong>AVIF + WebP Nativo</strong></li>
+        <li>Sesión: <strong id="auth-status-label">Usuario no registrado</strong></li>
+        <li>Retail: <strong id="geo-region-badge">📍 Baja California · Calimax Activo</strong></li>
+        <li>Eventos BI: <strong id="metric-events" data-count="0">0</strong></li>
       </ul>
     </div>
   </aside>
@@ -415,6 +417,53 @@
   <dialog id="recipe-dialog" class="recipe-dialog" aria-labelledby="dialog-recipe-title">
     <div id="recipe-dialog-content" class="dialog-inner"></div>
   </dialog>
+
+  <!-- Agente Virtual de Atención al Cliente (NIST AI Risk Management Framework & LFPDPPP) -->
+  <aside id="ai-chatbot" class="ai-chatbot" aria-label="Agente virtual de atención al cliente La Costeña">
+    <button
+      type="button"
+      id="chatbot-toggle"
+      class="chatbot-fab"
+      aria-expanded="false"
+      aria-controls="chatbot-panel"
+    >
+      <span aria-hidden="true">💬</span>
+      <span>Asistente IA</span>
+    </button>
+
+    <div id="chatbot-panel" class="chatbot-panel" hidden>
+      <div class="chatbot-header">
+        <div>
+          <strong class="chatbot-title">Chef Virtual La Costeña®</strong>
+          <span class="chatbot-badge">NIST AI RMF · Sesión Efímera</span>
+        </div>
+        <button type="button" id="chatbot-close" class="chatbot-close" aria-label="Minimizar asistente virtual">✕</button>
+      </div>
+
+      <p class="chatbot-disclosure">
+        Aviso de transparencia (NIST AI RMF / LFPDPPP): Interactúas con un sistema automatizado sin retención de datos personales. El historial se purga al cerrar la pestaña.
+      </p>
+
+      <div id="chatbot-messages" class="chatbot-messages" role="log" aria-live="polite">
+        <div class="chat-msg chat-msg-bot">
+          ¡Hola! Soy el asistente culinario para Baja California. Pregúntame por nivel de picor, recetas express o pedidos en Calimax.
+        </div>
+      </div>
+
+      <form id="chatbot-form" class="chatbot-form">
+        <label for="chatbot-input" class="sr-only">Escribe tu consulta culinaria</label>
+        <input
+          type="text"
+          id="chatbot-input"
+          class="chatbot-input"
+          placeholder="Ej. ¿Qué receta lleva chipotle?"
+          autocomplete="off"
+          required
+        >
+        <button type="submit" class="btn btn-primary chatbot-send">Enviar</button>
+      </form>
+    </div>
+  </aside>
 
   <footer class="site-footer">
     <div class="container footer-inner">

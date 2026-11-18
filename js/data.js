@@ -100,18 +100,31 @@ export const PRODUCTS = [
 export const RECIPES = [
   {
     id: 'rec-chilaquiles',
+    nombre: 'Chilaquiles Verdes Crujientes con Pollo Deshebrado',
     title: 'Chilaquiles Verdes Crujientes con Pollo Deshebrado',
+    categoria: 'Salsas',
     category: 'salsas',
     categoryLabel: 'Con Salsas Caseras',
+    picor: 'suave',
     heat: 'suave',
     heatLabel: 'Picor Suave',
+    tiempo: 'express',
     timeBucket: 'express',
     timeMinutes: 15,
     servings: 4,
     calories: '420 kcal',
     productUsed: 'Salsa Verde Mexicana 250 g',
     image: 'assets/img/rec-chilaquiles',
+    imagen: 'assets/img/rec-chilaquiles.avif',
+    imagenWebp: 'assets/img/rec-chilaquiles.webp',
     summary: 'Totopos de maíz bañados al momento en Salsa Verde Mexicana caliente, coronados con crema fresca, queso Cotija y cebolla morada.',
+    ingredientes: [
+      '1 frasco de Salsa Verde Mexicana La Costeña (250 g)',
+      '300 g de totopos de maíz dorados',
+      '200 g de pechuga de pollo cocida y deshebrada',
+      '1/2 taza de crema ácida fresca y 80 g de queso Cotija',
+      'Cilantro fresco picado y aros de cebolla morada'
+    ],
     ingredients: [
       '1 frasco de Salsa Verde Mexicana La Costeña (250 g)',
       '300 g de totopos de maíz dorados',
@@ -127,18 +140,31 @@ export const RECIPES = [
   },
   {
     id: 'rec-tinga',
+    nombre: 'Tinga Poblana de Pollo al Chipotle Adobado',
     title: 'Tinga Poblana de Pollo al Chipotle Adobado',
+    categoria: 'Chiles',
     category: 'chiles',
     categoryLabel: 'Con Chiles',
+    picor: 'alto',
     heat: 'alto',
     heatLabel: 'Picor Intenso',
+    tiempo: 'tradicional',
     timeBucket: 'tradicional',
     timeMinutes: 25,
     servings: 6,
     calories: '380 kcal',
     productUsed: 'Chiles Chipotles Adobados 215 g',
     image: 'assets/img/rec-tinga',
+    imagen: 'assets/img/rec-tinga.avif',
+    imagenWebp: 'assets/img/rec-tinga.webp',
     summary: 'Hebras de pollo jugosas cocinadas lentamente en caldillo de jitomate asado, cebolla caramelizada y el toque ahumado de Chipotles Adobados.',
+    ingredientes: [
+      '1 lata de Chiles Chipotles Adobados La Costeña (al gusto)',
+      '500 g de pechuga de pollo deshebrada',
+      '2 cebollas blancas grandes fileteadas en pluma',
+      '4 jitomates guaje maduros asados',
+      '1 hoja de laurel y tostadas de maíz para servir'
+    ],
     ingredients: [
       '1 lata de Chiles Chipotles Adobados La Costeña (al gusto)',
       '500 g de pechuga de pollo deshebrada',
@@ -154,18 +180,31 @@ export const RECIPES = [
   },
   {
     id: 'rec-enfrijoladas',
+    nombre: 'Enfrijoladas de Hogar con Chorizo y Queso Fresco',
     title: 'Enfrijoladas de Hogar con Chorizo y Queso Fresco',
+    categoria: 'Frijoles',
     category: 'frijoles',
     categoryLabel: 'Con Frijoles',
+    picor: 'suave',
     heat: 'suave',
     heatLabel: 'Picor Suave',
+    tiempo: 'tradicional',
     timeBucket: 'tradicional',
     timeMinutes: 20,
     servings: 4,
     calories: '460 kcal',
     productUsed: 'Frijoles Bayos Refritos 430 g',
     image: 'assets/img/rec-enfrijoladas',
+    imagen: 'assets/img/rec-enfrijoladas.avif',
+    imagenWebp: 'assets/img/rec-enfrijoladas.webp',
     summary: 'Tortillas recién hechas rellenas de queso panela y cubiertas con una salsa aterciopelada de Frijoles Bayos Refritos y epazote.',
+    ingredientes: [
+      '1 lata de Frijoles Bayos Refritos La Costeña (430 g)',
+      '12 tortillas de maíz calientes',
+      '150 g de chorizo dorado y escurrido',
+      '200 g de queso fresco desmoronado',
+      '1 taza de leche o caldo de pollo y rodajas de aguacate'
+    ],
     ingredients: [
       '1 lata de Frijoles Bayos Refritos La Costeña (430 g)',
       '12 tortillas de maíz calientes',
@@ -181,18 +220,31 @@ export const RECIPES = [
   },
   {
     id: 'rec-huevos-rancheros',
+    nombre: 'Huevos Rancheros de Hacienda con Jalapeños en Escabeche',
     title: 'Huevos Rancheros de Hacienda con Jalapeños en Escabeche',
+    categoria: 'Chiles',
     category: 'chiles',
     categoryLabel: 'Con Chiles',
+    picor: 'medio',
     heat: 'medio',
     heatLabel: 'Picor Medio',
+    tiempo: 'express',
     timeBucket: 'express',
     timeMinutes: 12,
     servings: 2,
     calories: '350 kcal',
     productUsed: 'Chiles Jalapeños Enteros 220 g',
     image: 'assets/img/rec-huevos-rancheros',
+    imagen: 'assets/img/rec-huevos-rancheros.avif',
+    imagenWebp: 'assets/img/rec-huevos-rancheros.webp',
     summary: 'Huevos estrellados sobre tortilla dorada, cubiertos con Salsa Ranchera tibia y coronados con Chiles Jalapeños y zanahorias en escabeche.',
+    ingredientes: [
+      '1 lata de Chiles Jalapeños Enteros La Costeña (220 g)',
+      '1 frasco de Salsa Ranchera Tatemada La Costeña (250 g)',
+      '4 huevos frescos de granja',
+      '4 tortillas de maíz pasadas por aceite caliente',
+      'Frijoles Bayos Refritos para acompañar'
+    ],
     ingredients: [
       '1 lata de Chiles Jalapeños Enteros La Costeña (220 g)',
       '1 frasco de Salsa Ranchera Tatemada La Costeña (250 g)',
@@ -208,18 +260,31 @@ export const RECIPES = [
   },
   {
     id: 'rec-esquites',
+    nombre: 'Esquites Callejeros Cremosos con Mayonesa de Chipotle',
     title: 'Esquites Callejeros Cremosos con Mayonesa de Chipotle',
+    categoria: 'Vegetales',
     category: 'vegetales',
     categoryLabel: 'Con Vegetales',
+    picor: 'medio',
     heat: 'medio',
     heatLabel: 'Picor Medio',
+    tiempo: 'express',
     timeBucket: 'express',
     timeMinutes: 10,
     servings: 4,
     calories: '290 kcal',
     productUsed: 'Elotes Dorados en Grano 410 g',
     image: 'assets/img/rec-esquites',
+    imagen: 'assets/img/rec-esquites.avif',
+    imagenWebp: 'assets/img/rec-esquites.webp',
     summary: 'Elotes Dorados salteados a la mantequilla con epazote fresco, limón real, queso añejo y mayonesa ahumada de chipotle.',
+    ingredientes: [
+      '1 lata de Elotes Dorados La Costeña (410 g) drenada',
+      '1 cucharada de adobo de Chiles Chipotles La Costeña',
+      '2 cucharadas de mantequilla y 1 rama de epazote picado',
+      '3 cucharadas de mayonesa y jugo de 2 limones',
+      '100 g de queso Cotija rallado'
+    ],
     ingredients: [
       '1 lata de Elotes Dorados La Costeña (410 g) drenada',
       '1 cucharada de adobo de Chiles Chipotles La Costeña',
@@ -235,18 +300,31 @@ export const RECIPES = [
   },
   {
     id: 'rec-tacos-dorados',
+    nombre: 'Tacos Dorados Ahogados en Salsa Ranchera Tatemada',
     title: 'Tacos Dorados Ahogados en Salsa Ranchera Tatemada',
+    categoria: 'Salsas',
     category: 'salsas',
     categoryLabel: 'Con Salsas Caseras',
+    picor: 'medio',
     heat: 'medio',
     heatLabel: 'Picor Medio',
+    tiempo: 'tradicional',
     timeBucket: 'tradicional',
     timeMinutes: 20,
     servings: 4,
     calories: '440 kcal',
     productUsed: 'Salsa Ranchera Tatemada 250 g',
     image: 'assets/img/rec-tacos-dorados',
+    imagen: 'assets/img/rec-tacos-dorados.avif',
+    imagenWebp: 'assets/img/rec-tacos-dorados.webp',
     summary: 'Flautas crujientes de papa y requesón servidas sobre espejo de Salsa Ranchera Tatemada, lechuga fresca y rajas de jalapeño.',
+    ingredientes: [
+      '1 frasco de Salsa Ranchera Tatemada La Costeña (250 g)',
+      '12 tortillas para taquear rellenas de papa con requesón',
+      'Rajas de Chiles Jalapeños La Costeña al gusto',
+      '1 taza de lechuga finamente picada y crema fresca',
+      'Queso fresco desmoronado y aguacate en cubos'
+    ],
     ingredients: [
       '1 frasco de Salsa Ranchera Tatemada La Costeña (250 g)',
       '12 tortillas para taquear rellenas de papa con requesón',
@@ -262,17 +340,29 @@ export const RECIPES = [
   }
 ];
 
+export const RECETAS = RECIPES;
+
 /**
  * Pure matrix filtering function (shared by UI and unit tests).
- * Filters recipes by category × heat × timeBucket × search query.
+ * Filters recipes by category/categoria × heat/picor × time/tiempo × search query.
  */
 export function filterRecipes(recipes, { category = 'all', heat = 'all', time = 'all', query = '' } = {}) {
+  const catNorm = category.toLowerCase();
+  const heatNorm = heat.toLowerCase();
+  const timeNorm = time.toLowerCase();
   const q = query.trim().toLowerCase();
+
   return recipes.filter((r) => {
-    if (category !== 'all' && r.category !== category) return false;
-    if (heat !== 'all' && r.heat !== heat) return false;
-    if (time !== 'all' && r.timeBucket !== time) return false;
-    if (q && !`${r.title} ${r.summary} ${r.productUsed} ${r.ingredients.join(' ')}`.toLowerCase().includes(q)) return false;
+    const rCat = (r.categoria || r.category || '').toLowerCase();
+    const rHeat = (r.picor || r.heat || '').toLowerCase();
+    const rTime = (r.tiempo || r.timeBucket || '').toLowerCase();
+    const rTitle = r.nombre || r.title || '';
+    const rIng = (r.ingredientes || r.ingredients || []).join(' ');
+
+    if (catNorm !== 'all' && rCat !== catNorm) return false;
+    if (heatNorm !== 'all' && rHeat !== heatNorm) return false;
+    if (timeNorm !== 'all' && rTime !== timeNorm) return false;
+    if (q && !`${rTitle} ${r.summary || ''} ${r.productUsed || ''} ${rIng}`.toLowerCase().includes(q)) return false;
     return true;
   });
 }
