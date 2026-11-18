@@ -19,7 +19,7 @@ export const PRODUCTS = [
     heatLevel: 2,
     price: '18.50',
     rating: '4.9',
-    image: 'assets/img/prod-jalapenos',
+    image: 'assets/img/ingrediente-jalapeno',
     description: 'Cosechados en su punto exacto de madurez, conservados con zanahoria, cebolla y especias aromáticas.',
     badge: 'Clásico de México'
   },
@@ -35,7 +35,7 @@ export const PRODUCTS = [
     heatLevel: 3,
     price: '22.00',
     rating: '4.9',
-    image: 'assets/img/prod-chipotles',
+    image: 'assets/img/ingrediente-chipotle',
     description: 'Jalapeños maduros ahumados lentamente en un adobo dulce y especiado de jitomate.',
     badge: 'Ahumado Natural'
   },
@@ -51,7 +51,7 @@ export const PRODUCTS = [
     heatLevel: 1,
     price: '21.00',
     rating: '4.8',
-    image: 'assets/img/prod-salsa-verde',
+    image: 'assets/img/ingrediente-tomatillo',
     description: 'Tomatillo fresco tatemado con cilantro, cebolla y un toque vibrante de chile serrano.',
     badge: 'Sin Conservadores'
   },
@@ -99,7 +99,7 @@ export const PRODUCTS = [
     heatLevel: 2,
     price: '21.50',
     rating: '4.9',
-    image: 'assets/img/prod-salsa-ranchera',
+    image: 'assets/img/ingrediente-cebolla-cilantro',
     description: 'Jitomate asado al comal con ajo, cebolla y chile jalapeño rojo molido en molcajete.',
     badge: 'Sazón al Comal'
   }
@@ -120,7 +120,7 @@ const RAW_RECIPES = [
     servings: 4,
     calories: '420 kcal',
     productUsed: 'Salsa Verde Mexicana 250 g',
-    image: 'assets/img/rec-chilaquiles',
+    image: 'assets/img/receta-chilaquiles-verdes',
     summary: 'Totopos de maíz bañados al momento en Salsa Verde Mexicana caliente, coronados con crema fresca, queso Cotija y cebolla morada.',
     ingredientes_locales: [
       '1 frasco de Salsa Verde Mexicana La Costeña (250 g)',
@@ -149,7 +149,7 @@ const RAW_RECIPES = [
     servings: 6,
     calories: '380 kcal',
     productUsed: 'Chiles Chipotles Adobados 215 g',
-    image: 'assets/img/rec-tinga',
+    image: 'assets/img/receta-tinga-pollo',
     summary: 'Hebras de pollo jugosas cocinadas lentamente en caldillo de jitomate asado, cebolla caramelizada y el toque ahumado de Chipotles Adobados.',
     ingredientes_locales: [
       '1 lata de Chiles Chipotles Adobados La Costeña (215 g)',
@@ -178,7 +178,7 @@ const RAW_RECIPES = [
     servings: 4,
     calories: '290 kcal',
     productUsed: 'Elotes Dorados en Grano 410 g',
-    image: 'assets/img/rec-esquites',
+    image: 'assets/img/receta-esquites',
     summary: 'Elotes Dorados salteados a la mantequilla con epazote fresco, limón real, queso añejo y mayonesa ahumada de chipotle.',
     ingredientes_locales: [
       '1 lata de Elotes Dorados La Costeña (410 g) drenada',
@@ -196,7 +196,7 @@ const RAW_RECIPES = [
   {
     id: 'rec-enfrijoladas',
     featured: false,
-    nombre: 'Enfrijoladas de Hogar con Chorizo y Queso Fresco',
+    nombre: 'Croquetas de Plátano Macho sobre Frijoles Bayos Refritos',
     categoria: 'Frijoles',
     category: 'frijoles',
     categoryLabel: 'Con Frijoles',
@@ -207,19 +207,19 @@ const RAW_RECIPES = [
     servings: 4,
     calories: '460 kcal',
     productUsed: 'Frijoles Bayos Refritos 430 g',
-    image: 'assets/img/rec-enfrijoladas',
-    summary: 'Tortillas recién hechas rellenas de queso panela y cubiertas con una salsa aterciopelada de Frijoles Bayos Refritos y epazote.',
+    image: 'assets/img/receta-croquetas-platano',
+    summary: 'Croquetas doradas de plátano macho rellenas de queso fresco y servidas sobre un espejo cremoso de Frijoles Bayos Refritos La Costeña.',
     ingredientes_locales: [
       '1 lata de Frijoles Bayos Refritos La Costeña (430 g)',
-      '12 tortillas de maíz calientes',
-      '150 g de chorizo dorado y escurrido',
+      '3 plátanos machos maduros cocidos y machacados',
       '200 g de queso fresco de Real del Castillo desmoronado',
-      '1 taza de caldo de pollo y rodajas de aguacate'
+      '1/2 taza de crema ácida y cilantro fresco picado',
+      '1 pizca de sal de mar de San Felipe'
     ],
     steps: [
-      'Licúa los Frijoles Bayos Refritos La Costeña con el caldo caliente hasta lograr una salsa tersa y cremosa.',
-      'Rellena las tortillas calientes con queso fresco, dóblalas y colócalas en el plato.',
-      'Baña generosamente con la salsa de frijol caliente y corona con chorizo dorado y aguacate.'
+      'Calienta los Frijoles Bayos Refritos La Costeña con un toque de caldo hasta lograr un espejo terso y cremoso.',
+      'Forma croquetas con el puré de plátano macho rellenas de queso fresco y dóralas ligeramente.',
+      'Sirve las croquetas calientes sobre la cama de frijoles bayos y decora con crema, queso y cilantro.'
     ]
   },
   {

@@ -8,7 +8,8 @@
   <meta name="theme-color" content="#9E0B22">
 
   <!-- Preload crítico únicamente para el activo LCP del Hero -->
-  <link rel="preload" as="image" href="assets/img/hero-banner.avif" type="image/avif" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/img/campo-agricola-mexicano.avif" type="image/avif" fetchpriority="high">
+  <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/styles.css">
 
   <!-- AEO JSON-LD Granular en index.html: 3 Recetas Insignia + Productos -->
@@ -87,7 +88,19 @@
   <!-- Web Component de Cabecera Compartida (Shadow DOM) -->
   <site-header>
     <header class="site-header">
-      <nav aria-label="Navegación de respaldo"><a href="recetas.html" aria-expanded="false">Recetario Completo</a></nav>
+      <div class="container header-inner">
+        <a href="index.html" class="brand-logo" aria-label="La Costeña Inicio">
+          <span class="brand-crest" aria-hidden="true">LC</span>
+          <span>La Costeña<sup>®</sup></span>
+        </a>
+        <nav aria-label="Navegación principal">
+          <ul class="nav-list">
+            <li><a href="index.html" class="nav-link" aria-current="page">Inicio Sensorial</a></li>
+            <li><a href="#catalogo" class="nav-link">Catálogo</a></li>
+            <li><a href="recetas.html" class="nav-link nav-cta">Cocinar Ahora</a></li>
+          </ul>
+        </nav>
+      </div>
     </header>
   </site-header>
 
@@ -125,21 +138,28 @@
 
         <div class="hero-visual">
           <picture class="media-picture">
-            <source srcset="assets/img/hero-banner.avif" type="image/avif">
-            <source srcset="assets/img/hero-banner.webp" type="image/webp">
+            <source srcset="assets/img/campo-agricola-mexicano.avif" type="image/avif">
+            <source srcset="assets/img/campo-agricola-mexicano.webp" type="image/webp">
             <img
-              src="assets/img/hero-banner.webp"
-              alt="Mesa mexicana con chiles jalapeños en escabeche, salsa ranchera tatemada y chilaquiles recién servidos"
-              width="960"
-              height="640"
+              src="assets/img/campo-agricola-mexicano.webp"
+              alt="Campo agrícola mexicano al atardecer con cosecha de chiles jalapeños y tomates frescos"
+              width="1200"
+              height="675"
               fetchpriority="high"
               decoding="async"
               class="media-img"
             >
           </picture>
-          <div class="hero-caption">
-            <span>Fotografía 2D de alta nitidez · AVIF/WebP hiper-comprimido</span>
+          <div class="hero-caption glass-panel">
+            <span>Campo agrícola mexicano · AVIF/WebP 1200px</span>
             <strong>LCP Prioritario</strong>
+          </div>
+          <div class="spatial-pbr-stage glass-panel" aria-label="Iluminación espacial PBR reactiva a sensores">
+            <div>
+              <strong>Reflejo Espacial PBR (Spatial UI)</strong>
+              <p>Inclinación por giroscopio / cursor con <code>DirectionalLight</code>.</p>
+            </div>
+            <canvas id="spatial-pbr-canvas" class="spatial-pbr-canvas" width="160" height="96"></canvas>
           </div>
         </div>
       </div>
@@ -155,7 +175,10 @@
               3 platillos insignia de carga instantánea con <code>scroll-snap-type: x mandatory</code> y conexión directa a Calimax Tijuana.
             </p>
           </div>
-          <a href="recetas.html" class="btn btn-primary" fetchpriority="high">Ver recetario completo</a>
+          <div class="hero-actions">
+            <a href="recetas.html" class="btn btn-primary" fetchpriority="high">Ver recetario completo</a>
+            <a href="recetas.html" class="btn btn-secondary">Preparar para la carnita asada</a>
+          </div>
         </div>
 
         <div
@@ -164,22 +187,78 @@
           role="region"
           aria-label="Carrusel de 3 recetas insignia La Costeña"
           aria-live="polite"
-        ></div>
+        >
+          <article class="carousel-slide recipe-card gpu-card">
+            <div class="recipe-media">
+              <picture class="media-picture">
+                <source srcset="assets/img/receta-chilaquiles-verdes.avif" type="image/avif">
+                <source srcset="assets/img/receta-chilaquiles-verdes.webp" type="image/webp">
+                <img src="assets/img/receta-chilaquiles-verdes.webp" alt="Chilaquiles Verdes Crujientes con Pollo Deshebrado" width="600" height="400" loading="lazy" decoding="async" class="media-img">
+              </picture>
+            </div>
+          </article>
+          <article class="carousel-slide recipe-card gpu-card">
+            <div class="recipe-media">
+              <picture class="media-picture">
+                <source srcset="assets/img/receta-tinga-pollo.avif" type="image/avif">
+                <source srcset="assets/img/receta-tinga-pollo.webp" type="image/webp">
+                <img src="assets/img/receta-tinga-pollo.webp" alt="Tinga Poblana de Pollo al Chipotle Adobado" width="600" height="400" loading="lazy" decoding="async" class="media-img">
+              </picture>
+            </div>
+          </article>
+          <article class="carousel-slide recipe-card gpu-card">
+            <div class="recipe-media">
+              <picture class="media-picture">
+                <source srcset="assets/img/receta-esquites.avif" type="image/avif">
+                <source srcset="assets/img/receta-esquites.webp" type="image/webp">
+                <img src="assets/img/receta-esquites.webp" alt="Esquites Callejeros Cremosos con Mayonesa de Chipotle" width="600" height="400" loading="lazy" decoding="async" class="media-img">
+              </picture>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
-    <!-- Catálogo de Productos con Carga Diferida Nativa (loading="lazy") -->
+    <!-- Catálogo de Productos e Ingredientes Frescos con Carga Diferida Nativa (loading="lazy") -->
     <section id="catalogo" class="section-block" aria-labelledby="catalogo-heading">
       <div class="container">
         <div class="section-header">
           <div>
-            <h2 id="catalogo-heading" class="section-title">Despensa Esencial La Costeña®</h2>
+            <h2 id="catalogo-heading" class="section-title">Despensa Esencial e Ingredientes del Campo</h2>
             <p class="section-subtitle">
-              Catálogo migrado 100% a formatos <code>.avif</code> y <code>.webp</code> con atributo nativo <code>loading="lazy"</code>.
+              Catálogo migrado 100% a formatos <code>.avif</code> y <code>.webp</code> (&le;600px) con atributo nativo <code>loading="lazy"</code> y <code>decoding="async"</code>.
             </p>
           </div>
         </div>
-        <div id="product-grid" class="card-grid"></div>
+        <div id="product-grid" class="card-grid">
+          <article class="product-card gpu-card">
+            <div class="product-media">
+              <picture class="media-picture">
+                <source srcset="assets/img/ingrediente-jalapeno.avif" type="image/avif">
+                <source srcset="assets/img/ingrediente-jalapeno.webp" type="image/webp">
+                <img src="assets/img/ingrediente-jalapeno.webp" alt="Chiles Jalapeños Frescos La Costeña" width="600" height="600" loading="lazy" decoding="async" class="media-img">
+              </picture>
+            </div>
+          </article>
+          <article class="product-card gpu-card">
+            <div class="product-media">
+              <picture class="media-picture">
+                <source srcset="assets/img/ingrediente-chipotle.avif" type="image/avif">
+                <source srcset="assets/img/ingrediente-chipotle.webp" type="image/webp">
+                <img src="assets/img/ingrediente-chipotle.webp" alt="Chiles Chipotles Adobados La Costeña" width="600" height="600" loading="lazy" decoding="async" class="media-img">
+              </picture>
+            </div>
+          </article>
+          <article class="product-card gpu-card">
+            <div class="product-media">
+              <picture class="media-picture">
+                <source srcset="assets/img/ingrediente-tomatillo.avif" type="image/avif">
+                <source srcset="assets/img/ingrediente-tomatillo.webp" type="image/webp">
+                <img src="assets/img/ingrediente-tomatillo.webp" alt="Tomatillo Fresco para Salsa Verde La Costeña" width="600" height="600" loading="lazy" decoding="async" class="media-img">
+              </picture>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -213,7 +292,14 @@
     </section>
   </main>
 
-  <!-- Widget Omnicanal de Carrito WhatsApp (Web Component con Shadow DOM) -->
+  <!-- Bottom Sheet Nativo <dialog id="sheet"> -->
+  <dialog id="sheet" class="bottom-sheet-dialog glass-panel" aria-labelledby="sheet-recipe-title">
+    <div id="sheet-content" class="dialog-inner"></div>
+  </dialog>
+
+  <!-- Componentes Transaccionales V4 (Thumb Zone & Scroll-Aware FAB) -->
+  <bottom-nav></bottom-nav>
+  <whatsapp-fab>Pedir por Whats (Envío Gratis)</whatsapp-fab>
   <whatsapp-cart-widget></whatsapp-cart-widget>
 
   <!-- Agente Virtual de Atención al Cliente (NIST AI Risk Management Framework & LFPDPPP) -->

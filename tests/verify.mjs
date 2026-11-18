@@ -38,7 +38,12 @@ for (const doc of [indexHtml, recetasHtml]) {
   assert.match(doc, /<site-footer\b/i, 'Falta <site-footer> en documento HTML');
   assert.match(doc, /<whatsapp-cart-widget\b/i, 'Falta <whatsapp-cart-widget> en documento HTML');
   assert.match(doc, /<aside\s+id="ai-chatbot"/i, 'Falta <aside id="ai-chatbot">');
+  assert.match(doc, /<a\s+href="#main-content"\s+class="skip-link">/i, 'Falta skip-link de accesibilidad');
+  assert.doesNotMatch(doc, />Recetario Completo<\/a>/i, 'Enlace huérfano "Recetario Completo" no debe existir');
+  assert.doesNotMatch(doc, />Volver al inicio<\/a>/i, 'Enlace huérfano "Volver al inicio" no debe existir');
 }
+assert.match(css, /\.skip-link\s*\{[\s\S]*?clip:\s*rect\(0,\s*0,\s*0,\s*0\)/, 'Falta ocultamiento accesible clip: rect(0, 0, 0, 0) en .skip-link');
+assert.match(css, /\.skip-link:focus[\s\S]*?position:\s*static/, 'Falta regla .skip-link:focus con position: static');
 
 // 2. PÁGINA PRINCIPAL (index.html) Y CARRUSEL CSS SCROLL-SNAP
 assert.doesNotMatch(indexHtml, /id="recipe-matrix-controls"/, 'index.html no debe alojar la matriz de filtrado');
@@ -71,6 +76,31 @@ for (const prod of PRODUCTS) {
   assert.ok(fs.existsSync(path.join(root, `${prod.image}.webp`)), `Falta activo WebP: ${prod.image}.webp`);
 }
 
+// 4.5. POBLACIÓN DE ACTIVOS FOTORREALISTAS (0 JPG/PNG, SEMÁNTICA .WEBP/.AVIF, <picture> EN DOM)
+const imgFiles = fs.readdirSync(path.join(root, 'assets/img'));
+const forbiddenImgs = imgFiles.filter((f) => /\.(jpe?g|png)$/i.test(f));
+assert.equal(forbiddenImgs.length, 0, `Prohibido guardar .jpg/.png en assets/img: ${forbiddenImgs.join(', ')}`);
+
+const requiredSemanticBases = [
+  'campo-agricola-mexicano',
+  'ingrediente-jalapeno',
+  'ingrediente-chipotle',
+  'ingrediente-tomatillo',
+  'ingrediente-cebolla-cilantro',
+  'receta-chilaquiles-verdes',
+  'receta-tinga-pollo',
+  'receta-esquites',
+  'receta-croquetas-platano'
+];
+for (const base of requiredSemanticBases) {
+  assert.ok(imgFiles.includes(`${base}.avif`), `Falta ${base}.avif en assets/img/`);
+  assert.ok(imgFiles.includes(`${base}.webp`), `Falta ${base}.webp en assets/img/`);
+}
+
+assert.match(indexHtml, /<picture\b[\s\S]*?assets\/img\/campo-agricola-mexicano\.avif[\s\S]*?fetchpriority="high"/i, 'Hero banner debe usar <picture> con .avif/.webp y fetchpriority="high"');
+assert.match(indexHtml, /<picture\b[\s\S]*?assets\/img\/receta-tinga-pollo\.avif[\s\S]*?loading="lazy"[\s\S]*?decoding="async"/i, 'index.html debe inyectar <picture> con loading="lazy" y decoding="async"');
+assert.match(recetasHtml, /<picture\b[\s\S]*?assets\/img\/receta-croquetas-platano\.avif[\s\S]*?loading="lazy"[\s\S]*?decoding="async"/i, 'recetas.html debe inyectar <picture> con loading="lazy" y decoding="async"');
+
 // 5. ENRUTADOR NATIVO Y AEO JSON-LD GRANULAR (3 EN INDEX VS 12 EN RECETAS)
 assert.match(appJs, /const\s+isRecipePage\s*=\s*window\.location\.pathname\.includes\('recetas'\)/, 'Falta detección de ruta recetas en app.js');
 assert.match(appJs, /if\s*\(isRecipePage\)\s*\{\s*import\('\.\/modules\/matrix-filter\.js'\);?\s*\}/, 'Falta import dinámico de matrix-filter.js en app.js');
@@ -100,4 +130,36 @@ purgeEphemeralSession();
 assert.match(css, /@media\s*\(\s*prefers-reduced-motion:\s*reduce\s*\)\s*\{\s*\*\s*\{\s*transition:\s*none\s*!important;\s*\}/);
 assert.match(swJs, /recetas\.html/, 'Service Worker debe cachear recetas.html');
 
-console.log('OK: Todas las verificaciones de La Costeña v3.0 MPA Nested Catalog (12 recetas) pasaron exitosamente.');
+// 7. V4 DESIGN SYSTEM, COMPONENTES TRANSACCIONALES, HAPTIC FEEDBACK, SPATIAL LIGHTING Y MICRO-COPY
+const variablesCss = fs.readFileSync(path.join(root, 'css/variables.css'), 'utf8');
+const mobileNavJs = fs.readFileSync(path.join(root, 'js/components/mobile-nav.js'), 'utf8');
+const bottomSheetJs = fs.readFileSync(path.join(root, 'js/components/bottom-sheet.js'), 'utf8');
+const interactionsJs = fs.readFileSync(path.join(root, 'js/modules/interactions.js'), 'utf8');
+const spatialLightingJs = fs.readFileSync(path.join(root, 'js/modules/spatial-lighting.js'), 'utf8');
+
+assert.match(variablesCss, /--primary:\s*#C8102E/i, 'Falta --primary: #C8102E en variables.css');
+assert.match(variablesCss, /--surface:\s*#FDFBF7/i, 'Falta --surface: #FDFBF7 en variables.css');
+assert.match(variablesCss, /--text:\s*#1C1C1C/i, 'Falta --text: #1C1C1C en variables.css');
+assert.match(variablesCss, /@media\s*\(\s*prefers-color-scheme:\s*dark\s*\)[\s\S]*?--surface:\s*#1E1E1E[\s\S]*?--text:\s*#EAEAEA/i, 'Falta modo oscuro automático en variables.css');
+assert.match(css, /\.glass-panel\s*\{[\s\S]*?backdrop-filter:\s*blur\(12px\)/i, 'Falta .glass-panel con backdrop-filter: blur(12px)');
+
+assert.match(mobileNavJs, /customElements\.define\('bottom-nav'/, 'Falta registro de <bottom-nav>');
+assert.match(mobileNavJs, /customElements\.define\('whatsapp-fab'/, 'Falta registro de <whatsapp-fab>');
+assert.match(bottomSheetJs, /sheet/, 'Falta soporte para <dialog id="sheet"> en bottom-sheet.js');
+assert.match(indexHtml, /<dialog\s+id="sheet"/i, 'Falta <dialog id="sheet"> en index.html');
+assert.match(recetasHtml, /<dialog\s+id="sheet"/i, 'Falta <dialog id="sheet"> en recetas.html');
+
+assert.match(interactionsJs, /scale\(0\.98\)/, 'Falta escala negativa scale(0.98) en interactions.js');
+assert.match(css, /@keyframes\s+shimmer/, 'Falta @keyframes shimmer en styles.css');
+
+assert.match(spatialLightingJs, /DirectionalLight/, 'Falta DirectionalLight en spatial-lighting.js');
+assert.match(spatialLightingJs, /mousemove/, 'Falta listener mousemove en spatial-lighting.js');
+assert.match(spatialLightingJs, /DeviceOrientationEvent/, 'Falta integración DeviceOrientationEvent en spatial-lighting.js');
+assert.match(spatialLightingJs, /requestAnimationFrame/, 'Falta requestAnimationFrame en spatial-lighting.js');
+assert.match(spatialLightingJs, /IntersectionObserver/, 'Falta IntersectionObserver en spatial-lighting.js');
+
+assert.match(recetasHtml, /placeholder="Busca por ingrediente\.\.\. ej\. chipotle, elotitos, salsa verde"/, 'Falta micro-copy de buscador en recetas.html');
+assert.match(indexHtml, /Pedir por Whats \(Envío Gratis\)/, 'Falta micro-copy de botón FAB en index.html');
+assert.match(recetasHtml, /Preparar para la carnita asada/, 'Falta micro-copy de CTA Recetas en recetas.html');
+
+console.log('OK: Todas las verificaciones de La Costeña v4.0 UI/UX Pro Design System pasaron exitosamente.');

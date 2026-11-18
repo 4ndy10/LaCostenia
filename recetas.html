@@ -6,6 +6,7 @@
   <title>La Costeña® | Recetario Matricial Completo (12+ Recetas Baja California)</title>
   <meta name="description" content="Explora las 12 recetas del Sistema Matricial de La Costeña® para Baja California. Filtra por línea de producto, nivel de picor y tiempo, y pide ingredientes en Calimax Tijuana.">
   <meta name="theme-color" content="#9E0B22">
+  <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/styles.css">
 
   <!-- AEO JSON-LD Granular en recetas.html: 12 Recetas Completas -->
@@ -50,7 +51,19 @@
   <!-- Web Component de Cabecera Compartida (Shadow DOM) -->
   <site-header>
     <header class="site-header">
-      <nav aria-label="Navegación de respaldo"><a href="index.html">Volver al inicio</a></nav>
+      <div class="container header-inner">
+        <a href="index.html" class="brand-logo" aria-label="La Costeña Inicio">
+          <span class="brand-crest" aria-hidden="true">LC</span>
+          <span>La Costeña<sup>®</sup></span>
+        </a>
+        <nav aria-label="Navegación principal">
+          <ul class="nav-list">
+            <li><a href="index.html" class="nav-link">Inicio Sensorial</a></li>
+            <li><a href="index.html#catalogo" class="nav-link">Catálogo</a></li>
+            <li><a href="recetas.html" class="nav-link nav-cta" aria-current="page">Cocinar Ahora</a></li>
+          </ul>
+        </nav>
+      </div>
     </header>
   </site-header>
 
@@ -76,7 +89,7 @@
           </button>
         </div>
 
-        <div id="matrix-panel" class="matrix-shell">
+        <div id="matrix-panel" class="matrix-shell glass-panel">
           <div class="matrix-top-bar">
             <div class="search-field-wrap">
               <label for="recipe-search" class="search-label">Buscar por ingrediente local o platillo</label>
@@ -84,7 +97,7 @@
                 type="search"
                 id="recipe-search"
                 class="search-input"
-                placeholder="Ej. chipotle, camarón, burrito, Tijuana, chilaquiles..."
+                placeholder="Busca por ingrediente... ej. chipotle, elotitos, salsa verde"
                 autocomplete="off"
               >
             </div>
@@ -136,18 +149,64 @@
           </div>
         </div>
 
-        <!-- Contenedor Completo de 12+ Recetas -->
-        <div id="recipe-grid-full" class="card-grid" aria-live="polite"></div>
+        <!-- Contenedor Completo de 12+ Recetas con pre-renderizado semántico <picture> -->
+        <div id="recipe-grid-full" class="card-grid" aria-live="polite">
+          <article class="recipe-card gpu-card">
+            <div class="recipe-media">
+              <picture class="media-picture">
+                <source srcset="assets/img/receta-chilaquiles-verdes.avif" type="image/avif">
+                <source srcset="assets/img/receta-chilaquiles-verdes.webp" type="image/webp">
+                <img src="assets/img/receta-chilaquiles-verdes.webp" alt="Chilaquiles Verdes Crujientes con Pollo Deshebrado" width="600" height="400" loading="lazy" decoding="async" class="media-img">
+              </picture>
+            </div>
+            <div class="recipe-body">
+              <button type="button" class="btn btn-secondary btn-open-recipe" data-recipe-id="rec-chilaquiles">Preparar para la carnita asada</button>
+            </div>
+          </article>
+          <article class="recipe-card gpu-card">
+            <div class="recipe-media">
+              <picture class="media-picture">
+                <source srcset="assets/img/receta-tinga-pollo.avif" type="image/avif">
+                <source srcset="assets/img/receta-tinga-pollo.webp" type="image/webp">
+                <img src="assets/img/receta-tinga-pollo.webp" alt="Tinga Poblana de Pollo al Chipotle Adobado" width="600" height="400" loading="lazy" decoding="async" class="media-img">
+              </picture>
+            </div>
+          </article>
+          <article class="recipe-card gpu-card">
+            <div class="recipe-media">
+              <picture class="media-picture">
+                <source srcset="assets/img/receta-esquites.avif" type="image/avif">
+                <source srcset="assets/img/receta-esquites.webp" type="image/webp">
+                <img src="assets/img/receta-esquites.webp" alt="Esquites Callejeros Cremosos con Mayonesa de Chipotle" width="600" height="400" loading="lazy" decoding="async" class="media-img">
+              </picture>
+            </div>
+          </article>
+          <article class="recipe-card gpu-card">
+            <div class="recipe-media">
+              <picture class="media-picture">
+                <source srcset="assets/img/receta-croquetas-platano.avif" type="image/avif">
+                <source srcset="assets/img/receta-croquetas-platano.webp" type="image/webp">
+                <img src="assets/img/receta-croquetas-platano.webp" alt="Croquetas de Plátano Macho sobre Frijoles Bayos Refritos" width="600" height="400" loading="lazy" decoding="async" class="media-img">
+              </picture>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
   </main>
 
-  <!-- Modal Nativo <dialog> para Receta Paso a Paso -->
+  <!-- Bottom Sheet Nativo <dialog id="sheet"> (reemplaza modales tradicionales) -->
+  <dialog id="sheet" class="bottom-sheet-dialog glass-panel" aria-labelledby="sheet-recipe-title">
+    <div id="sheet-content" class="dialog-inner"></div>
+  </dialog>
+
   <dialog id="recipe-dialog" class="recipe-dialog" aria-labelledby="dialog-recipe-title">
     <div id="recipe-dialog-content" class="dialog-inner"></div>
   </dialog>
 
-  <!-- Widget Omnicanal de Carrito WhatsApp (Web Component con Shadow DOM) -->
+  <!-- Componentes Transaccionales V4 (Thumb Zone & Scroll-Aware FAB) -->
+  <bottom-nav></bottom-nav>
+  <whatsapp-fab>Pedir por Whats (Envío Gratis)</whatsapp-fab>
   <whatsapp-cart-widget></whatsapp-cart-widget>
 
   <!-- Agente Virtual de Atención al Cliente (NIST AI Risk Management Framework & LFPDPPP) -->

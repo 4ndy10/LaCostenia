@@ -3,6 +3,7 @@
 import { RECIPES, filterRecipes } from '../data.js';
 import { syncCalimaxButtonsDOM, emitOmnichannelEvent } from './omnichannel.js';
 import { toggleFavoriteRecipe, isFavoriteRecipe } from './auth-state.js';
+import { openBottomSheet, initBottomSheet } from '../components/bottom-sheet.js';
 
 const state = {
   category: 'all',
@@ -57,7 +58,7 @@ export function renderFullRecipeCatalog() {
       card.className = 'recipe-card gpu-card';
       card.innerHTML = `
         <div class="recipe-media">
-          ${createPictureHTML(rec.image, `Platillo terminado: ${rec.nombre}`, 640, 420)}
+          ${createPictureHTML(rec.image, `Platillo terminado: ${rec.nombre}`, 600, 400)}
           <span class="recipe-time-badge">${rec.timeMinutes} min · ${rec.servings} porciones</span>
           <button
             type="button"
@@ -104,7 +105,7 @@ export function renderFullRecipeCatalog() {
               data-recipe-id="${rec.id}"
               aria-haspopup="dialog"
             >
-              Preparar paso a paso
+              Preparar para la carnita asada
             </button>
           </div>
         </div>
@@ -198,6 +199,7 @@ export function openRecipeModal(recipeId, triggerEl) {
 
 export function initMatrixFilter() {
   if (typeof document === 'undefined') return;
+  initBottomSheet();
 
   // Apply URL query parameter ?category=... if navigated from index.html product catalog
   if (typeof window !== 'undefined' && window.location.search) {
@@ -306,7 +308,7 @@ export function initMatrixFilter() {
     }
     const openRecBtn = e.target.closest('.btn-open-recipe');
     if (openRecBtn) {
-      openRecipeModal(openRecBtn.dataset.recipeId, openRecBtn);
+      openBottomSheet(openRecBtn.dataset.recipeId, openRecBtn);
     }
   });
 }

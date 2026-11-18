@@ -3,6 +3,9 @@ import { PRODUCTS, RECIPES, FEATURED_RECIPES, filterRecipes } from './data.js';
 import { initOmnichannel, syncCalimaxButtonsDOM, emitOmnichannelEvent } from './modules/omnichannel.js';
 import { initAuthState, recordChatInteraction } from './modules/auth-state.js';
 import { injectGranularJsonLd } from './modules/router.js';
+import { initInteractions } from './modules/interactions.js';
+import { initSpatialLighting } from './modules/spatial-lighting.js';
+import { initBottomSheet, openBottomSheet } from './components/bottom-sheet.js';
 
 // ponytail: direct DOM template string + DocumentFragment avoids VDOM/template-engine overhead; upgrade only if list exceeds >500 items
 function createPictureHTML(basePath, alt, width, height, priority = false) {
@@ -34,7 +37,7 @@ function renderSensoryCarousel() {
     slide.className = 'carousel-slide recipe-card gpu-card';
     slide.innerHTML = `
       <div class="recipe-media">
-        ${createPictureHTML(rec.image, `Platillo insignia: ${rec.nombre}`, 640, 420, false)}
+        ${createPictureHTML(rec.image, `Platillo insignia: ${rec.nombre}`, 600, 400, false)}
         <span class="recipe-time-badge">${rec.timeMinutes} min · ${rec.servings} porciones</span>
       </div>
       <div class="recipe-body">
@@ -59,6 +62,14 @@ function renderSensoryCarousel() {
           >
             Pedir ingredientes vía WhatsApp
           </a>
+          <button
+            type="button"
+            class="btn btn-primary btn-open-recipe"
+            data-recipe-id="${rec.id}"
+            aria-haspopup="dialog"
+          >
+            Preparar para la carnita asada
+          </button>
           <button
             type="button"
             class="btn btn-secondary btn-add-wa-cart"
@@ -179,6 +190,11 @@ function setupChatbot() {
 
 function setupCartDelegation() {
   document.addEventListener('click', (e) => {
+    const openBtn = e.target.closest('.btn-open-recipe');
+    if (openBtn) {
+      openBottomSheet(openBtn.dataset.recipeId, openBtn);
+      return;
+    }
     const cartBtn = e.target.closest('.btn-add-wa-cart');
     if (!cartBtn) return;
     const rec = RECIPES.find((r) => r.id === cartBtn.dataset.recipeId);
@@ -250,6 +266,9 @@ function registerServiceWorker() {
 
 function init() {
   initAuthState();
+  initBottomSheet();
+  initInteractions();
+  initSpatialLighting();
   renderSensoryCarousel();
   renderProducts();
   setupChatbot();
